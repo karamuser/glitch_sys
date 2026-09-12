@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-linux:
-    name: Linux (${{ matrix.arch }})
+  build-linux-cli:
+    name: Linux CLI (${{ matrix.arch }})
     runs-on: ${{ matrix.runner }}
     strategy:
       matrix:
@@ -22,10 +22,17 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install pyinstaller rich
-      - run: |
+      - name: Install deps
+        run: |
+          pip install --upgrade pip
+          pip install pyinstaller rich
+      - name: Build CLI
+        run: |
           cd src
-          pyinstaller --onefile --name glitch_linux_${{ matrix.arch }} glitch_sys.py
+          pyinstaller --onefile --name glitch_linux_${{ matrix.arch }} \
+            --exclude-module kivy --exclude-module tkinter \
+            --exclude-module matplotlib --exclude-module numpy \
+            glitch_sys.py
       - uses: actions/upload-artifact@v4
         with:
           name: glitch_linux_${{ matrix.arch }}
@@ -33,7 +40,7 @@ jobs:
 
   release:
     name: Release
-    needs: build-linux
+    needs: build-linux-cli
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     steps:
