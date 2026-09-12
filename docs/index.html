@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glitch Sys - VPN, DNS, Protection</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Courier New', monospace;
+    background: #0a0a0a;
+    color: #c9d1d9;
+    line-height: 1.7;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  .container { max-width: 960px; margin: 0 auto; }
+  header {
+    padding: 40px 0;
+    border-bottom: 2px solid #008800;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  h1 { color: #00ff00; font-size: 2.5em; margin-bottom: 8px; }
+  .subtitle { color: #888; font-size: 1em; }
+  .lang-switch button {
+    background: #111;
+    color: #00ff00;
+    border: 1px solid #008800;
+    padding: 8px 16px;
+    margin-left: 6px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+  }
+  .lang-switch button:hover { background: #008800; }
+  .lang-switch button.active { background: #008800; color: #00ff00; }
+  .section {
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 6px;
+    padding: 24px;
+    margin: 24px 0;
+  }
+  .section h2 {
+    color: #00ff00;
+    margin-bottom: 16px;
+    font-size: 1.3em;
+    border-bottom: 1px solid #222;
+    padding-bottom: 8px;
+  }
+  .section h3 {
+    color: #00aa00;
+    margin: 16px 0 8px;
+    font-size: 1.1em;
+  }
+  .section p { margin-bottom: 12px; }
+  pre {
+    background: #000;
+    border: 1px solid #008800;
+    border-radius: 4px;
+    padding: 16px;
+    overflow-x: auto;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    margin: 12px 0;
+  }
+  code { font-family: 'Courier New', monospace; }
+  .btn {
+    display: inline-block;
+    background: #008800;
+    color: #00ff00;
+    padding: 12px 24px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 8px 8px 8px 0;
+    border: 1px solid #00aa00;
+    font-family: 'Courier New', monospace;
+  }
+  .btn:hover { background: #00aa00; }
+  .warning {
+    background: #1a0f00;
+    border-left: 3px solid #ff8800;
+    padding: 12px 16px;
+    margin: 16px 0;
+    color: #cc8844;
+    font-size: 0.9em;
+  }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { padding: 10px; text-align: left; border-bottom: 1px solid #222; }
+  th { color: #00ff00; }
+  .hidden { display: none; }
+  footer {
+    text-align: center;
+    padding: 24px;
+    color: #555;
+    border-top: 1px solid #222;
+    margin-top: 40px;
+    font-size: 0.9em;
+  }
+  footer a { color: #00aa00; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div>
+      <h1>Glitch Sys</h1>
+      <p class="subtitle" id="sub-en">VPN | DNS | Protection</p>
+      <p class="subtitle hidden" id="sub-ar">VPN | DNS | الحماية</p>
+      <p class="subtitle">Version 0.1</p>
+    </div>
+    <div class="lang-switch">
+      <button id="btn-en" class="active" onclick="setLang('en')">English</button>
+      <button id="btn-ar" onclick="setLang('ar')">العربية</button>
+    </div>
+  </header>
+
+  <div class="section">
+    <h2 id="t-desc-en">About</h2>
+    <h2 id="t-desc-ar" class="hidden">حول التطبيق</h2>
+    <p id="p-desc-en">
+      Glitch Sys is a command-line tool that manages VPN, DNS, and blocks malicious domains.
+      It works on GNU/Linux distributions and Android (via Termux).
+      Built with Python and designed for privacy and security.
+    </p>
+    <p id="p-desc-ar" class="hidden">
+      Glitch Sys أداة سطر أوامر تدير VPN و DNS وتحجب المواقع الخبيثة.
+      تعمل على توزيعات GNU/Linux وأندرويد (عبر Termux).
+      مبنية بلغة Python ومصممة للخصوصية والأمان.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2 id="t-linux-en">Linux Installation</h2>
+    <h2 id="t-linux-ar" class="hidden">التنزيل على Linux</h2>
+
+    <h3 id="t-linux-x86-en">For x86_64 (Most Desktops and Laptops)</h3>
+    <h3 id="t-linux-x86-ar" class="hidden">لـ x86_64 (أغلب الحواسيب المكتبية والمحمولة)</h3>
+    <pre><code>wget https://github.com/USERNAME/glitch-sys/releases/latest/download/glitch_linux_x86_64
+chmod +x glitch_linux_x86_64
+sudo mv glitch_linux_x86_64 /usr/local/bin/glitch
+sudo glitch start</code></pre>
+    <a class="btn" href="https://github.com/USERNAME/glitch-sys/releases/latest/download/glitch_linux_x86_64">Download x86_64</a>
+
+    <h3 id="t-linux-arm-en">For ARM64 (Raspberry Pi, ARM Laptops)</h3>
+    <h3 id="t-linux-arm-ar" class="hidden">لـ ARM64 (راسبيري باي، لابتوبات ARM)</h3>
+    <pre><code>wget https://github.com/USERNAME/glitch-sys/releases/latest/download/glitch_linux_arm64
+chmod +x glitch_linux_arm64
+sudo mv glitch_linux_arm64 /usr/local/bin/glitch
+sudo glitch start</code></pre>
+    <a class="btn" href="https://github.com/USERNAME/glitch-sys/releases/latest/download/glitch_linux_arm64">Download ARM64</a>
+
+    <div class="warning" id="w-linux-en">
+      Requires sudo to modify /etc/hosts. Only run on systems you own.
+    </div>
+    <div class="warning hidden" id="w-linux-ar">
+      يحتاج sudo لتعديل ملف hosts. شغّله فقط على الأجهزة التي تملكها.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 id="t-android-en">Android (Termux)</h2>
+    <h2 id="t-android-ar" class="hidden">أندرويد (Termux)</h2>
+    <p id="p-android-en">Download Termux from F-Droid or GitHub, then run:</p>
+    <p id="p-android-ar" class="hidden">حمّل Termux من F-Droid أو GitHub، ثم شغّل:</p>
+    <pre><code>pkg update && pkg upgrade -y
+pkg install python git -y
+pip install rich
+git clone https://github.com/USERNAME/glitch-sys.git
+cd glitch-sys/src
+python glitch_sys.py start</code></pre>
+    <a class="btn" href="https://f-droid.org/packages/com.termux/">Termux (F-Droid)</a>
+    <a class="btn" href="https://github.com/termux/termux-app/releases/latest">Termux (Latest GitHub)</a>
+    <div class="warning" id="w-android-en">
+      Android blocks /etc/hosts modification. VPN must be configured via system settings.
+    </div>
+    <div class="warning hidden" id="w-android-ar">
+      أندرويد يمنع تعديل hosts. VPN يجب إعداده من إعدادات النظام.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2 id="t-cmd-en">Commands</h2>
+    <h2 id="t-cmd-ar" class="hidden">الأوامر</h2>
+    <pre><code>glitch start                Start system
+glitch open vpn             Show VPN list
+glitch open dns             Show DNS list
+glitch start vpn &lt;name&gt;     Start a VPN
+glitch start vpn .all       Start all VPNs
+glitch start dns &lt;name&gt;     Set DNS
+glitch start dns .all       Apply all DNS
+glitch rm vpn &lt;name&gt;        Stop a VPN
+glitch rm vpn .all          Stop all VPNs
+glitch rm dns               Reset DNS
+glitch scan &lt;domain&gt;        Analyze a domain
+glitch block                Block threats
+glitch unblock              Unblock all
+glitch status               System status
+glitch update               Update threat DB
+glitch gui                  Launch GUI
+glitch ls commands          Show commands
+glitch exit                 Exit</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 id="t-arch-en">Supported Architectures</h2>
+    <h2 id="t-arch-ar" class="hidden">المعماريات المدعومة</h2>
+    <table>
+      <tr>
+        <th id="th-arch-en">Architecture</th>
+        <th id="th-arch-ar" class="hidden">المعمارية</th>
+        <th id="th-status-en">Status</th>
+        <th id="th-status-ar" class="hidden">الحالة</th>
+      </tr>
+      <tr>
+        <td>x86_64</td>
+        <td id="st1-en">Supported</td>
+        <td id="st1-ar" class="hidden">مدعومة</td>
+      </tr>
+      <tr>
+        <td>arm64 (aarch64)</td>
+        <td id="st2-en">Supported</td>
+        <td id="st2-ar" class="hidden">مدعومة</td>
+      </tr>
+      <tr>
+        <td>armv7</td>
+        <td id="st3-en">Supported via Termux</td>
+        <td id="st3-ar" class="hidden">مدعومة عبر Termux</td>
+      </tr>
+      <tr>
+        <td>i686</td>
+        <td id="st4-en">Limited</td>
+        <td id="st4-ar" class="hidden">محدودة</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 id="t-versions-en">Supported Android Versions</h2>
+    <h2 id="t-versions-ar" class="hidden">إصدارات أندرويد المدعومة</h2>
+    <table>
+      <tr>
+        <th id="th-ver-en">Android Version</th>
+        <th id="th-ver-ar" class="hidden">إصدار أندرويد</th>
+        <th id="th-ver-st-en">Status</th>
+        <th id="th-ver-st-ar" class="hidden">الحالة</th>
+      </tr>
+      <tr><td>Android 7.0+</td><td id="av1-en">Supported</td><td id="av1-ar" class="hidden">مدعوم</td></tr>
+      <tr><td>Android 10+</td><td id="av2-en">Recommended</td><td id="av2-ar" class="hidden">موصى به</td></tr>
+      <tr><td>Android 13+</td><td id="av3-en">Supported</td><td id="av3-ar" class="hidden">مدعوم</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 id="t-team-en">Team</h2>
+    <h2 id="t-team-ar" class="hidden">الفريق</h2>
+    <p><strong>Karam Al-Bari</strong> - Developer</p>
+    <p><strong>T STUDIO</strong> - Development Team</p>
+    <p id="p-ai-en" style="margin-top: 12px; color: #666; font-size: 0.9em;">
+      Development assisted by DeepSeek AI.
+    </p>
+    <p id="p-ai-ar" class="hidden" style="margin-top: 12px; color: #666; font-size: 0.9em;">
+      تم تطوير هذا المشروع بمساعدة ذكاء DeepSeek الاصطناعي.
+    </p>
+  </div>
+
+  <footer>
+    <p>2026 T STUDIO - All rights reserved</p>
+    <p>Made in Iraq</p>
+    <p style="margin-top: 8px;">
+      Built with assistance from
+      <a href="https://chat.deepseek.com" target="_blank">DeepSeek AI</a>
+    </p>
+  </footer>
+</div>
+
+<script>
+function setLang(lang) {
+  const en = document.querySelectorAll('[id$="-en"]');
+  const ar = document.querySelectorAll('[id$="-ar"]');
+  if (lang === 'ar') {
+    en.forEach(e => e.classList.add('hidden'));
+    ar.forEach(e => e.classList.remove('hidden'));
+    document.getElementById('btn-en').classList.remove('active');
+    document.getElementById('btn-ar').classList.add('active');
+    document.documentElement.lang = 'ar';
+    document.documentElement.dir = 'rtl';
+  } else {
+    ar.forEach(e => e.classList.add('hidden'));
+    en.forEach(e => e.classList.remove('hidden'));
+    document.getElementById('btn-ar').classList.remove('active');
+    document.getElementById('btn-en').classList.add('active');
+    document.documentElement.lang = 'en';
+    document.documentElement.dir = 'ltr';
+  }
+}
+</script>
+</body>
+  </html>
