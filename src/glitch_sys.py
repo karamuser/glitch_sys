@@ -4,7 +4,7 @@ from pathlib import Path
 from datetime import datetime
 
 APP_NAME = "Glitch Sys"
-APP_VERSION = "0.1"
+APP_VERSION = "0.3"
 APP_AUTHOR = "Karam Al-Bari"
 APP_TEAM = "T STUDIO"
 
@@ -43,10 +43,7 @@ SUSPICIOUS_KEYWORDS = ["login", "verify", "account", "update", "secure", "bank",
 URL_SHORTENERS = ["bit.ly", "tinyurl.com", "goo.gl", "t.co", "ow.ly", "is.gd",
                   "buff.ly", "adf.ly", "shorte.st", "bc.vc"]
 
-DEFAULT_CONFIG = {
-    "lang": "en",
-    "theme": "dark"
-}
+DEFAULT_CONFIG = {"lang": "en", "theme": "dark"}
 
 try:
     from rich.console import Console
@@ -75,7 +72,6 @@ try:
     from kivy.uix.label import Label
     from kivy.uix.textinput import TextInput
     from kivy.uix.scrollview import ScrollView
-    from kivy.uix.spinner import Spinner
     from kivy.core.window import Window
     from kivy.utils import get_color_from_hex
     HAS_KIVY = True
@@ -124,19 +120,26 @@ def analyze_domain(domain):
     d = domain.lower().strip()
     for tld in SUSPICIOUS_TLDS:
         if d.endswith(tld):
-            score += 30; reasons.append(f"Suspicious TLD: {tld}"); break
+            score += 30
+            reasons.append(f"Suspicious TLD: {tld}")
+            break
     for kw in SUSPICIOUS_KEYWORDS:
         if kw in d:
-            score += 15; reasons.append(f"Danger keyword: {kw}")
+            score += 15
+            reasons.append(f"Danger keyword: {kw}")
     for s in URL_SHORTENERS:
         if s in d:
-            score += 25; reasons.append(f"URL shortener: {s}")
+            score += 25
+            reasons.append(f"URL shortener: {s}")
     if len(d) > 50:
-        score += 10; reasons.append("Very long domain")
+        score += 10
+        reasons.append("Very long domain")
     if d.count("-") > 3:
-        score += 15; reasons.append("Many hyphens")
+        score += 15
+        reasons.append("Many hyphens")
     if re.search(r"(g00gle|paypa1|micr0soft|faceb00k)", d):
-        score += 40; reasons.append("Brand impersonation")
+        score += 40
+        reasons.append("Brand impersonation")
     label = "DANGEROUS" if score > 50 else "SUSPICIOUS" if score > 25 else "SAFE"
     return score, reasons, label
 
@@ -149,7 +152,7 @@ def fetch_threats():
     for url in sources:
         try:
             console.print(f"[yellow]Fetching: {url[:60]}...[/yellow]")
-            req = urllib.request.Request(url, headers={"User-Agent": "GlitchSys/0.1"})
+            req = urllib.request.Request(url, headers={"User-Agent": "GlitchSys/0.3"})
             with urllib.request.urlopen(req, timeout=25) as r:
                 data = r.read().decode("utf-8", errors="ignore")
             for line in data.split("\n"):
@@ -274,7 +277,6 @@ def reset_dns():
     except Exception as e:
         return False, str(e)
 
-
 def show_help():
     text = f"""
 {APP_NAME} {APP_VERSION} - Commands
@@ -351,45 +353,58 @@ def run_command(cmd_str):
     elif main == "open" and len(parts) > 1:
         if parts[1] == "vpn":
             out.append("VPN List:")
-            for v in VPN_LIST: out.append(f"  {v} - Ready")
+            for v in VPN_LIST:
+                out.append(f"  {v} - Ready")
         elif parts[1] == "dns":
             out.append("DNS List:")
-            for n, ip in DNS_CONFIG.items(): out.append(f"  {n} - {ip}")
+            for n, ip in DNS_CONFIG.items():
+                out.append(f"  {n} - {ip}")
     elif main == "start" and len(parts) > 1:
         sub = parts[1].lower()
         if sub == "vpn":
             if len(parts) > 2 and parts[2] == ".all":
                 for v in VPN_LIST:
-                    ok, msg = start_vpn(v); out.append(msg)
+                    ok, msg = start_vpn(v)
+                    out.append(msg)
             elif len(parts) > 2:
-                ok, msg = start_vpn(parts[2]); out.append(msg)
+                ok, msg = start_vpn(parts[2])
+                out.append(msg)
         elif sub == "dns":
             if len(parts) > 2 and parts[2] == ".all":
                 for n in DNS_CONFIG:
-                    ok, msg = set_dns(n); out.append(msg)
+                    ok, msg = set_dns(n)
+                    out.append(msg)
             elif len(parts) > 2:
-                ok, msg = set_dns(parts[2]); out.append(msg)
+                ok, msg = set_dns(parts[2])
+                out.append(msg)
     elif main == "rm" and len(parts) > 1:
         sub = parts[1].lower()
         if sub == "vpn":
             name = parts[2] if len(parts) > 2 else ".all"
-            ok, msg = stop_vpn(name); out.append(msg)
+            ok, msg = stop_vpn(name)
+            out.append(msg)
         elif sub == "dns":
-            ok, msg = reset_dns(); out.append(msg)
+            ok, msg = reset_dns()
+            out.append(msg)
     elif main == "scan" and len(parts) > 1:
         score, reasons, label = analyze_domain(parts[1])
         out.append(f"{parts[1]}: {score}/100 [{label}]")
-        for r in reasons: out.append(f"  - {r}")
+        for r in reasons:
+            out.append(f"  - {r}")
     elif main == "block":
         threats = load_threats()
-        if not threats: threats = fetch_threats()
-        ok, msg = block_domains(threats); out.append(msg)
+        if not threats:
+            threats = fetch_threats()
+        ok, msg = block_domains(threats)
+        out.append(msg)
     elif main == "unblock":
-        ok, msg = unblock_all(); out.append(msg)
+        ok, msg = unblock_all()
+        out.append(msg)
     elif main == "update":
         threats = fetch_threats()
         if threats:
-            ok, msg = block_domains(threats); out.append(msg)
+            ok, msg = block_domains(threats)
+            out.append(msg)
     elif main == "status":
         os_name = "Android" if IS_ANDROID else "Windows" if IS_WINDOWS else "macOS" if IS_MAC else "Linux"
         out.append(f"OS: {os_name}")
@@ -397,13 +412,17 @@ def run_command(cmd_str):
         out.append(f"Root: {'yes' if is_root() else 'no'}")
         out.append(f"Threats: {len(load_threats())}")
         out.append(f"Hosts: {HOSTS_FILE}")
-    elif main == "neofetch": out.extend(egg_neofetch())
+    elif main == "neofetch":
+        out.extend(egg_neofetch())
     elif main == "cowsay":
         msg = " ".join(parts[1:]) if len(parts) > 1 else "Glitch Sys"
         out.extend(egg_cowsay(msg))
-    elif main == "matrix": out.extend(egg_matrix())
-    elif main == "linux": out.extend(egg_linux())
-    elif main == "ls": out.extend(egg_ls())
+    elif main == "matrix":
+        out.extend(egg_matrix())
+    elif main == "linux":
+        out.extend(egg_linux())
+    elif main == "ls":
+        out.extend(egg_ls())
     else:
         out.append(f"Unknown: {main}")
     return out
@@ -437,7 +456,7 @@ if HAS_KIVY:
             "theme": "Theme", "back": "Back", "exit": "Exit", "start": "Start",
             "stop": "Stop", "scan": "Scan", "status": "Status",
             "team_text": "Karam Al-Bari\nT STUDIO\n\nAI used for development assistance only.",
-            "about_text": "Glitch Sys 0.1\nVPN + DNS + Blocking\nBy Karam Al-Bari\nT STUDIO 2026"
+            "about_text": "Glitch Sys 0.3\nVPN + DNS + Blocking\nBy Karam Al-Bari\nT STUDIO 2026"
         },
         "ar": {
             "welcome": "هلا بيك بـ Glitch Sys",
@@ -446,7 +465,7 @@ if HAS_KIVY:
             "theme": "الثيم", "back": "رجع", "exit": "طلع", "start": "شغل",
             "stop": "وقف", "scan": "افحص", "status": "الحالة",
             "team_text": "كرم الباري\nT STUDIO\n\nتم استخدام الذكاء الاصطناعي للمساعدة فقط.",
-            "about_text": "Glitch Sys 0.1\nVPN + DNS + حجب\nمن كرم الباري\nT STUDIO 2026"
+            "about_text": "Glitch Sys 0.3\nVPN + DNS + حجب\nمن كرم الباري\nT STUDIO 2026"
         }
     }
 
@@ -461,7 +480,6 @@ if HAS_KIVY:
             super().__init__(**kw)
             root = BoxLayout(orientation="vertical", padding=20, spacing=10)
             root.add_widget(Label(text=f"{APP_NAME} {APP_VERSION}", font_size=32, color=FG_GREEN))
-
             grid = GridLayout(cols=2, spacing=10, size_hint_y=None, height=280)
             buttons = [
                 ("Terminal", self.go_term), ("Settings", self.go_settings),
@@ -492,14 +510,12 @@ if HAS_KIVY:
         def __init__(self, **kw):
             super().__init__(**kw)
             root = BoxLayout(orientation="vertical", padding=10, spacing=10)
-
             top = BoxLayout(size_hint_y=None, height=50)
             back = Button(text=t("back"), size_hint_x=0.3, background_color=DG_GREEN, color=FG_GREEN)
             back.bind(on_press=lambda *a: setattr(self.manager, "current", "main"))
             top.add_widget(back)
             top.add_widget(Label(text="Terminal", color=FG_GREEN))
             root.add_widget(top)
-
             self.output = Label(text="", color=FG_GREEN, size_hint_y=None, markup=False,
                                 halign="left", valign="top")
             self.output.bind(texture_size=lambda *a: setattr(self.output, "height", self.output.texture_size[1]))
@@ -507,14 +523,7 @@ if HAS_KIVY:
             scroll = ScrollView()
             scroll.add_widget(self.output)
             root.add_widget(scroll)
-
             self.input = TextInput(multiline=False, background_color=BG_DARK,
                                    foreground_color=FG_GREEN, cursor_color=FG_GREEN,
                                    hint_text="glitch>", size_hint_y=None, height=50)
-            self.input.bind(on_text_validate=self.run_cmd)
-            root.add_widget(self.input)
-            self.add_widget(root)
-            self.write("Type 'help'. Try: neofetch, cowsay, matrix, linux")
-
-        def write(self, text):
-            
+            self.input.bind(on_text_valid
