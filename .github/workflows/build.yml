@@ -8,15 +8,8 @@ on:
 
 jobs:
   build-linux-cli:
-    name: Linux CLI (${{ matrix.arch }})
-    runs-on: ${{ matrix.runner }}
-    strategy:
-      matrix:
-        include:
-          - arch: x86_64
-            runner: ubuntu-latest
-          - arch: arm64
-            runner: ubuntu-24.04-arm
+    name: Linux CLI (x86_64)
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -29,7 +22,7 @@ jobs:
       - name: Build CLI
         run: |
           cd src
-          pyinstaller --onefile --name glitch_linux_${{ matrix.arch }} \
+          pyinstaller --onefile --name glitch_linux_x86_64 \
             --exclude-module kivy \
             --exclude-module tkinter \
             --exclude-module matplotlib \
@@ -37,19 +30,12 @@ jobs:
             glitch_sys.py
       - uses: actions/upload-artifact@v4
         with:
-          name: glitch_linux_${{ matrix.arch }}
-          path: src/dist/glitch_linux_${{ matrix.arch }}
+          name: glitch_linux_x86_64
+          path: src/dist/glitch_linux_x86_64
 
   build-linux-gui:
-    name: Linux GUI (${{ matrix.arch }})
-    runs-on: ${{ matrix.runner }}
-    strategy:
-      matrix:
-        include:
-          - arch: x86_64
-            runner: ubuntu-latest
-          - arch: arm64
-            runner: ubuntu-24.04-arm
+    name: Linux GUI (x86_64)
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -58,9 +44,9 @@ jobs:
       - name: Install system deps
         run: |
           sudo apt update
-          sudo apt install -y \
-            libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev \
-            libsdl2-ttf-dev libportmidi-dev libswscale-dev \
+          sudo apt install -y --no-install-recommends \
+            libsdl2-2.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 \
+            libsdl2-ttf-2.0-0 libportmidi0 libswscale-dev \
             libavformat-dev libavcodec-dev zlib1g-dev \
             libgl1-mesa-dev libgles2-mesa-dev
       - name: Install Python deps
@@ -70,14 +56,14 @@ jobs:
       - name: Build GUI
         run: |
           cd src
-          pyinstaller --onefile --name glitch_linux_${{ matrix.arch }}_gui \
+          pyinstaller --onefile --name glitch_linux_x86_64_gui \
             --collect-all kivy \
             --collect-all kivy_deps \
             glitch_sys.py
       - uses: actions/upload-artifact@v4
         with:
-          name: glitch_linux_${{ matrix.arch }}_gui
-          path: src/dist/glitch_linux_${{ matrix.arch }}_gui
+          name: glitch_linux_x86_64_gui
+          path: src/dist/glitch_linux_x86_64_gui
 
   release:
     name: Release
