@@ -90,6 +90,15 @@
   th { color: #00ff00; }
   td code { color: #7ee787; }
   .hidden { display: none; }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 0.85em;
+    margin-left: 6px;
+  }
+  .badge-cli { background: #1a3a1a; color: #7ee787; border: 1px solid #008800; }
+  .badge-gui { background: #1a1a3a; color: #7e9eff; border: 1px solid #0044aa; }
   footer {
     text-align: center;
     padding: 24px;
@@ -109,7 +118,7 @@
       <h1>Glitch Sys</h1>
       <p class="subtitle" id="sub-en">VPN | DNS | Protection</p>
       <p class="subtitle hidden" id="sub-ar">VPN | DNS | الحماية</p>
-      <p class="subtitle">Version 0.1</p>
+      <p class="subtitle">Version 0.2</p>
     </div>
     <div class="lang-switch">
       <button id="btn-en" class="active" onclick="setLang('en')">English</button>
@@ -121,38 +130,85 @@
     <h2 id="t-desc-en">About</h2>
     <h2 id="t-desc-ar" class="hidden">حول التطبيق</h2>
     <p id="p-desc-en">
-      Glitch Sys is a command-line tool that manages VPN, DNS, and blocks malicious domains.
-      It works on GNU/Linux distributions and Android (via Termux).
+      Glitch Sys is a tool that manages VPN, DNS, and blocks malicious domains.
+      It works on GNU/Linux distributions (CLI + GUI) and Android (CLI via Termux).
       Built with Python and designed for privacy and security.
     </p>
     <p id="p-desc-ar" class="hidden">
-      Glitch Sys أداة سطر أوامر تدير VPN و DNS وتحجب المواقع الخبيثة.
-      تعمل على توزيعات GNU/Linux وأندرويد (عبر Termux).
+      Glitch Sys أداة تدير VPN و DNS وتحجب المواقع الخبيثة.
+      تعمل على توزيعات GNU/Linux (CLI + GUI) وأندرويد (CLI عبر Termux).
       مبنية بلغة Python ومصممة للخصوصية والأمان.
     </p>
+  </div>
+
+  <div class="section">
+    <h2 id="t-avail-en">Available Versions</h2>
+    <h2 id="t-avail-ar" class="hidden">النسخ المتوفرة</h2>
+    <table>
+      <tr>
+        <th id="th-plat-en">Platform</th>
+        <th id="th-plat-ar" class="hidden">النظام</th>
+        <th id="th-type-en">Type</th>
+        <th id="th-type-ar" class="hidden">النوع</th>
+        <th id="th-size-en">Size</th>
+        <th id="th-size-ar" class="hidden">الحجم</th>
+      </tr>
+      <tr>
+        <td>Linux x86_64</td>
+        <td><span class="badge badge-cli">CLI</span></td>
+        <td id="sz1-en">~25 MB</td>
+        <td id="sz1-ar" class="hidden">~25 MB</td>
+      </tr>
+      <tr>
+        <td>Linux x86_64</td>
+        <td><span class="badge badge-gui">GUI</span></td>
+        <td id="sz2-en">~120 MB</td>
+        <td id="sz2-ar" class="hidden">~120 MB</td>
+      </tr>
+      <tr>
+        <td>Linux ARM64</td>
+        <td><span class="badge badge-cli">CLI</span></td>
+        <td id="sz3-en">~25 MB</td>
+        <td id="sz3-ar" class="hidden">~25 MB</td>
+      </tr>
+      <tr>
+        <td>Android (Termux)</td>
+        <td><span class="badge badge-cli">CLI</span></td>
+        <td id="sz4-en">Python script</td>
+        <td id="sz4-ar" class="hidden">سكربت Python</td>
+      </tr>
+    </table>
   </div>
 
   <div class="section">
     <h2 id="t-linux-en">Linux Installation</h2>
     <h2 id="t-linux-ar" class="hidden">التنزيل على Linux</h2>
 
-    <h3 id="t-linux-x86-en">For x86_64 (Most Desktops and Laptops)</h3>
-    <h3 id="t-linux-x86-ar" class="hidden">لـ x86_64 (أغلب الحواسيب المكتبية والمحمولة)</h3>
+    <h3 id="t-linux-x86-cli-en">x86_64 - CLI Version (Lightweight)</h3>
+    <h3 id="t-linux-x86-cli-ar" class="hidden">x86_64 - نسخة CLI (خفيفة)</h3>
     <pre><code>wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64
 chmod +x glitch_linux_x86_64
 sudo mv glitch_linux_x86_64 /usr/local/bin/glitch
 sudo glitch start</code></pre>
-    <p class="note" id="n-linux-x86-en">Download URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64</p>
-    <p class="note hidden" id="n-linux-x86-ar">رابط التنزيل: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64</p>
+    <p class="note" id="n-linux-x86-cli-en">URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64</p>
+    <p class="note hidden" id="n-linux-x86-cli-ar">الرابط: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64</p>
 
-    <h3 id="t-linux-arm-en">For ARM64 (Raspberry Pi, ARM Laptops)</h3>
-    <h3 id="t-linux-arm-ar" class="hidden">لـ ARM64 (راسبيري باي، لابتوبات ARM)</h3>
+    <h3 id="t-linux-x86-gui-en">x86_64 - GUI Version (Graphical Interface)</h3>
+    <h3 id="t-linux-x86-gui-ar" class="hidden">x86_64 - نسخة GUI (واجهة رسومية)</h3>
+    <pre><code>wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64_gui
+chmod +x glitch_linux_x86_64_gui
+sudo ./glitch_linux_x86_64_gui</code></pre>
+    <p class="note" id="n-linux-x86-gui-en">URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64_gui</p>
+    <p class="note hidden" id="n-linux-x86-gui-ar">الرابط: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64_gui</p>
+
+    <h3 id="t-linux-arm-en">ARM64 - CLI Version (Raspberry Pi, ARM Laptops)</h3>
+    <h3 id="t-linux-arm-ar" class="hidden">ARM64 - نسخة CLI (راسبيري باي، لابتوبات ARM)</h3>
     <pre><code>wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64
 chmod +x glitch_linux_arm64
 sudo mv glitch_linux_arm64 /usr/local/bin/glitch
 sudo glitch start</code></pre>
-    <p class="note" id="n-linux-arm-en">Download URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64</p>
-    <p class="note hidden" id="n-linux-arm-ar">رابط التنزيل: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64</p>
+    <p class="note" id="n-linux-arm-en">URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64</p>
+    <p class="note hidden" id="n-linux-arm-ar">الرابط: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64</p>
 
     <div class="warning" id="w-linux-en">
       Requires sudo to modify /etc/hosts. Only run on systems you own.
@@ -179,9 +235,11 @@ python glitch_sys.py start</code></pre>
     <p class="note hidden" id="n-android-gh-ar">أحدث Termux: https://github.com/termux/termux-app/releases/latest</p>
     <div class="warning" id="w-android-en">
       Android blocks /etc/hosts modification. VPN must be configured via system settings.
+      GUI is not supported on Termux (use CLI).
     </div>
     <div class="warning hidden" id="w-android-ar">
       أندرويد يمنع تعديل hosts. VPN يجب إعداده من إعدادات النظام.
+      الواجهة الرسومية غير مدعومة على Termux (استخدم CLI).
     </div>
   </div>
 
@@ -388,18 +446,18 @@ python glitch_sys.py start</code></pre>
       </tr>
       <tr>
         <td>x86_64</td>
-        <td id="st1-en">Supported</td>
-        <td id="st1-ar" class="hidden">مدعومة</td>
+        <td id="st1-en">Supported (CLI + GUI)</td>
+        <td id="st1-ar" class="hidden">مدعومة (CLI + GUI)</td>
       </tr>
       <tr>
         <td>arm64 (aarch64)</td>
-        <td id="st2-en">Supported</td>
-        <td id="st2-ar" class="hidden">مدعومة</td>
+        <td id="st2-en">Supported (CLI only)</td>
+        <td id="st2-ar" class="hidden">مدعومة (CLI فقط)</td>
       </tr>
       <tr>
         <td>armv7</td>
-        <td id="st3-en">Supported via Termux</td>
-        <td id="st3-ar" class="hidden">مدعومة عبر Termux</td>
+        <td id="st3-en">Supported via Termux (CLI)</td>
+        <td id="st3-ar" class="hidden">مدعومة عبر Termux (CLI)</td>
       </tr>
       <tr>
         <td>i686</td>
@@ -419,7 +477,7 @@ python glitch_sys.py start</code></pre>
         <th id="th-ver-st-en">Status</th>
         <th id="th-ver-st-ar" class="hidden">الحالة</th>
       </tr>
-      <tr><td>Android 7.0+</td><td id="av1-en">Supported</td><td id="av1-ar" class="hidden">مدعوم</td></tr>
+      <tr><td>Android 7.0+</td><td id="av1-en">Supported (CLI)</td><td id="av1-ar" class="hidden">مدعوم (CLI)</td></tr>
       <tr><td>Android 10+</td><td id="av2-en">Recommended</td><td id="av2-ar" class="hidden">موصى به</td></tr>
       <tr><td>Android 13+</td><td id="av3-en">Supported</td><td id="av3-ar" class="hidden">مدعوم</td></tr>
     </table>
@@ -470,4 +528,4 @@ function setLang(lang) {
 }
 </script>
 </body>
- </html>
+         </html>
