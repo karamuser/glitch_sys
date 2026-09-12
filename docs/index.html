@@ -70,19 +70,12 @@
     margin: 12px 0;
   }
   code { font-family: 'Courier New', monospace; }
-  .btn {
-    display: inline-block;
-    background: #008800;
-    color: #00ff00;
-    padding: 12px 24px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-weight: bold;
-    margin: 8px 8px 8px 0;
-    border: 1px solid #00aa00;
-    font-family: 'Courier New', monospace;
+  .note {
+    color: #888;
+    font-size: 0.9em;
+    margin-top: 8px;
+    font-style: italic;
   }
-  .btn:hover { background: #00aa00; }
   .warning {
     background: #1a0f00;
     border-left: 3px solid #ff8800;
@@ -143,19 +136,21 @@
 
     <h3 id="t-linux-x86-en">For x86_64 (Most Desktops and Laptops)</h3>
     <h3 id="t-linux-x86-ar" class="hidden">لـ x86_64 (أغلب الحواسيب المكتبية والمحمولة)</h3>
-    <pre><code>wget https://github.com/karamuser/glitch-sys/releases/latest/download/glitch_linux_x86_64
+    <pre><code>wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64
 chmod +x glitch_linux_x86_64
 sudo mv glitch_linux_x86_64 /usr/local/bin/glitch
 sudo glitch start</code></pre>
-    <a class="btn" href="https://github.com/karamuser/glitch-sys/releases/latest/download/glitch_linux_x86_64">Download x86_64</a>
+    <p class="note" id="n-linux-x86-en">Download URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64</p>
+    <p class="note hidden" id="n-linux-x86-ar">رابط التنزيل: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64</p>
 
     <h3 id="t-linux-arm-en">For ARM64 (Raspberry Pi, ARM Laptops)</h3>
     <h3 id="t-linux-arm-ar" class="hidden">لـ ARM64 (راسبيري باي، لابتوبات ARM)</h3>
-    <pre><code>wget https://github.com/karamuser/glitch-sys/releases/latest/download/glitch_linux_arm64
+    <pre><code>wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64
 chmod +x glitch_linux_arm64
 sudo mv glitch_linux_arm64 /usr/local/bin/glitch
 sudo glitch start</code></pre>
-    <a class="btn" href="https://github.com/karamuser/glitch-sys/releases/latest/download/glitch_linux_arm64">Download ARM64</a>
+    <p class="note" id="n-linux-arm-en">Download URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64</p>
+    <p class="note hidden" id="n-linux-arm-ar">رابط التنزيل: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64</p>
 
     <div class="warning" id="w-linux-en">
       Requires sudo to modify /etc/hosts. Only run on systems you own.
@@ -173,11 +168,13 @@ sudo glitch start</code></pre>
     <pre><code>pkg update && pkg upgrade -y
 pkg install python git -y
 pip install rich
-git clone https://github.com/karamuser/glitch-sys.git
-cd glitch-sys/src
+git clone https://github.com/karamuser/glitch_sys.git
+cd glitch_sys/src
 python glitch_sys.py start</code></pre>
-    <a class="btn" href="https://f-droid.org/packages/com.termux/">Termux (F-Droid)</a>
-    <a class="btn" href="https://github.com/termux/termux-app/releases/latest">Termux (Latest GitHub)</a>
+    <p class="note" id="n-android-en">Termux F-Droid: https://f-droid.org/packages/com.termux/</p>
+    <p class="note hidden" id="n-android-ar">Termux من F-Droid: https://f-droid.org/packages/com.termux/</p>
+    <p class="note" id="n-android-gh-en">Termux Latest: https://github.com/termux/termux-app/releases/latest</p>
+    <p class="note hidden" id="n-android-gh-ar">أحدث Termux: https://github.com/termux/termux-app/releases/latest</p>
     <div class="warning" id="w-android-en">
       Android blocks /etc/hosts modification. VPN must be configured via system settings.
     </div>
