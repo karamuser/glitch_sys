@@ -88,6 +88,7 @@
   table { width: 100%; border-collapse: collapse; margin: 12px 0; }
   th, td { padding: 10px; text-align: left; border-bottom: 1px solid #222; }
   th { color: #00ff00; }
+  td code { color: #7ee787; }
   .hidden { display: none; }
   footer {
     text-align: center;
@@ -185,26 +186,194 @@ python glitch_sys.py start</code></pre>
   </div>
 
   <div class="section">
-    <h2 id="t-cmd-en">Commands</h2>
-    <h2 id="t-cmd-ar" class="hidden">الأوامر</h2>
-    <pre><code>glitch start                Start system
-glitch open vpn             Show VPN list
-glitch open dns             Show DNS list
-glitch start vpn &lt;name&gt;     Start a VPN
-glitch start vpn .all       Start all VPNs
-glitch start dns &lt;name&gt;     Set DNS
-glitch start dns .all       Apply all DNS
-glitch rm vpn &lt;name&gt;        Stop a VPN
-glitch rm vpn .all          Stop all VPNs
-glitch rm dns               Reset DNS
-glitch scan &lt;domain&gt;        Analyze a domain
-glitch block                Block threats
-glitch unblock              Unblock all
-glitch status               System status
-glitch update               Update threat DB
-glitch gui                  Launch GUI
-glitch ls commands          Show commands
-glitch exit                 Exit</code></pre>
+    <h2 id="t-cmd-en">Commands Reference</h2>
+    <h2 id="t-cmd-ar" class="hidden">مرجع الأوامر</h2>
+
+    <h3 id="cmd-basic-en">Basic</h3>
+    <h3 id="cmd-basic-ar" class="hidden">الأوامر الأساسية</h3>
+    <table>
+      <tr>
+        <th id="th-cmd-en">Command</th>
+        <th id="th-cmd-ar" class="hidden">الأمر</th>
+        <th id="th-desc2-en">Description</th>
+        <th id="th-desc2-ar" class="hidden">الشرح</th>
+      </tr>
+      <tr>
+        <td><code>glitch start</code></td>
+        <td id="e1-en">Start system and block threats</td>
+        <td id="e1-ar" class="hidden">تشغيل النظام وحجب التهديدات</td>
+      </tr>
+      <tr>
+        <td><code>glitch help</code></td>
+        <td id="e2-en">Show all commands</td>
+        <td id="e2-ar" class="hidden">عرض كل الأوامر</td>
+      </tr>
+      <tr>
+        <td><code>glitch ls commands</code></td>
+        <td id="e3-en">Same as help</td>
+        <td id="e3-ar" class="hidden">مثل help</td>
+      </tr>
+      <tr>
+        <td><code>glitch status</code></td>
+        <td id="e4-en">Show OS, architecture, and threat count</td>
+        <td id="e4-ar" class="hidden">عرض النظام والمعمارية وعدد التهديدات</td>
+      </tr>
+      <tr>
+        <td><code>glitch exit</code></td>
+        <td id="e5-en">Unblock all and exit</td>
+        <td id="e5-ar" class="hidden">فك الحجب والخروج</td>
+      </tr>
+    </table>
+
+    <h3 id="cmd-vpn-en">VPN</h3>
+    <h3 id="cmd-vpn-ar" class="hidden">إدارة VPN</h3>
+    <table>
+      <tr>
+        <th id="th-cmd2-en">Command</th>
+        <th id="th-cmd2-ar" class="hidden">الأمر</th>
+        <th id="th-desc3-en">Description</th>
+        <th id="th-desc3-ar" class="hidden">الشرح</th>
+      </tr>
+      <tr>
+        <td><code>glitch open vpn</code></td>
+        <td id="v1-en">Show available VPN list</td>
+        <td id="v1-ar" class="hidden">عرض قائمة VPN المتوفرة</td>
+      </tr>
+      <tr>
+        <td><code>glitch start vpn &lt;name&gt;</code></td>
+        <td id="v2-en">Start a specific VPN (e.g. proton)</td>
+        <td id="v2-ar" class="hidden">تشغيل VPN محدد (مثل proton)</td>
+      </tr>
+      <tr>
+        <td><code>glitch start vpn .all</code></td>
+        <td id="v3-en">Start all VPNs</td>
+        <td id="v3-ar" class="hidden">تشغيل كل الـ VPNs</td>
+      </tr>
+      <tr>
+        <td><code>glitch rm vpn &lt;name&gt;</code></td>
+        <td id="v4-en">Stop a specific VPN</td>
+        <td id="v4-ar" class="hidden">إيقاف VPN محدد</td>
+      </tr>
+      <tr>
+        <td><code>glitch rm vpn .all</code></td>
+        <td id="v5-en">Stop all VPNs</td>
+        <td id="v5-ar" class="hidden">إيقاف كل الـ VPNs</td>
+      </tr>
+    </table>
+
+    <h3 id="cmd-dns-en">DNS</h3>
+    <h3 id="cmd-dns-ar" class="hidden">إدارة DNS</h3>
+    <table>
+      <tr>
+        <th id="th-cmd3-en">Command</th>
+        <th id="th-cmd3-ar" class="hidden">الأمر</th>
+        <th id="th-desc4-en">Description</th>
+        <th id="th-desc4-ar" class="hidden">الشرح</th>
+      </tr>
+      <tr>
+        <td><code>glitch open dns</code></td>
+        <td id="d1-en">Show available DNS list</td>
+        <td id="d1-ar" class="hidden">عرض قائمة DNS المتوفرة</td>
+      </tr>
+      <tr>
+        <td><code>glitch start dns &lt;name&gt;</code></td>
+        <td id="d2-en">Set a specific DNS (cloudflare, google, quad9)</td>
+        <td id="d2-ar" class="hidden">تعيين DNS محدد (cloudflare, google, quad9)</td>
+      </tr>
+      <tr>
+        <td><code>glitch start dns .all</code></td>
+        <td id="d3-en">Apply all DNS servers</td>
+        <td id="d3-ar" class="hidden">تعيين كل سيرفرات DNS</td>
+      </tr>
+      <tr>
+        <td><code>glitch rm dns</code></td>
+        <td id="d4-en">Reset DNS to default</td>
+        <td id="d4-ar" class="hidden">إرجاع DNS للافتراضي</td>
+      </tr>
+    </table>
+
+    <h3 id="cmd-block-en">Security</h3>
+    <h3 id="cmd-block-ar" class="hidden">الأمان</h3>
+    <table>
+      <tr>
+        <th id="th-cmd4-en">Command</th>
+        <th id="th-cmd4-ar" class="hidden">الأمر</th>
+        <th id="th-desc5-en">Description</th>
+        <th id="th-desc5-ar" class="hidden">الشرح</th>
+      </tr>
+      <tr>
+        <td><code>glitch scan &lt;domain&gt;</code></td>
+        <td id="b1-en">Analyze a domain for threats (0-100 score)</td>
+        <td id="b1-ar" class="hidden">تحليل رابط للتهديدات (درجة 0-100)</td>
+      </tr>
+      <tr>
+        <td><code>glitch block</code></td>
+        <td id="b2-en">Block all threats from database</td>
+        <td id="b2-ar" class="hidden">حجب كل التهديدات من القاعدة</td>
+      </tr>
+      <tr>
+        <td><code>glitch unblock</code></td>
+        <td id="b3-en">Remove all blocks</td>
+        <td id="b3-ar" class="hidden">فك كل الحجب</td>
+      </tr>
+      <tr>
+        <td><code>glitch update</code></td>
+        <td id="b4-en">Download latest threat database</td>
+        <td id="b4-ar" class="hidden">تنزيل أحدث قاعدة تهديدات</td>
+      </tr>
+    </table>
+
+    <h3 id="cmd-gui-en">GUI</h3>
+    <h3 id="cmd-gui-ar" class="hidden">الواجهة الرسومية</h3>
+    <table>
+      <tr>
+        <th id="th-cmd5-en">Command</th>
+        <th id="th-cmd5-ar" class="hidden">الأمر</th>
+        <th id="th-desc6-en">Description</th>
+        <th id="th-desc6-ar" class="hidden">الشرح</th>
+      </tr>
+      <tr>
+        <td><code>glitch gui</code></td>
+        <td id="g1-en">Launch graphical interface (needs Kivy)</td>
+        <td id="g1-ar" class="hidden">فتح الواجهة الرسومية (يحتاج Kivy)</td>
+      </tr>
+    </table>
+
+    <h3 id="cmd-eggs-en">Hidden (Easter Eggs)</h3>
+    <h3 id="cmd-eggs-ar" class="hidden">مخفية (Easter Eggs)</h3>
+    <table>
+      <tr>
+        <th id="th-cmd6-en">Command</th>
+        <th id="th-cmd6-ar" class="hidden">الأمر</th>
+        <th id="th-desc7-en">Description</th>
+        <th id="th-desc7-ar" class="hidden">الشرح</th>
+      </tr>
+      <tr>
+        <td><code>glitch neofetch</code></td>
+        <td id="x1-en">Show system info in ASCII art</td>
+        <td id="x1-ar" class="hidden">عرض معلومات النظام برسم ASCII</td>
+      </tr>
+      <tr>
+        <td><code>glitch cowsay &lt;msg&gt;</code></td>
+        <td id="x2-en">A cow says your message</td>
+        <td id="x2-ar" class="hidden">بقرة تقول رسالتك</td>
+      </tr>
+      <tr>
+        <td><code>glitch matrix</code></td>
+        <td id="x3-en">Matrix digital rain effect</td>
+        <td id="x3-ar" class="hidden">تأثير الماتريكس الرقمي</td>
+      </tr>
+      <tr>
+        <td><code>glitch linux</code></td>
+        <td id="x4-en">Show Linux Tux penguin</td>
+        <td id="x4-ar" class="hidden">عرض شعار لينكس (البطريق)</td>
+      </tr>
+      <tr>
+        <td><code>glitch ls</code></td>
+        <td id="x5-en">Fake file listing with hidden folder</td>
+        <td id="x5-ar" class="hidden">قائمة ملفات وهمية مع مجلد مخفي</td>
+      </tr>
+    </table>
   </div>
 
   <div class="section">
@@ -301,4 +470,4 @@ function setLang(lang) {
 }
 </script>
 </body>
-</html>
+ </html>
