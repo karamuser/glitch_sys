@@ -172,6 +172,12 @@
         <td id="sz3-ar" class="hidden">~25 MB</td>
       </tr>
       <tr>
+        <td>Linux ARM64</td>
+        <td><span class="badge badge-gui">GUI</span></td>
+        <td id="sz5-en">~120 MB</td>
+        <td id="sz5-ar" class="hidden">~120 MB</td>
+      </tr>
+      <tr>
         <td>Android (Termux)</td>
         <td><span class="badge badge-cli">CLI</span></td>
         <td id="sz4-en">Python script</td>
@@ -197,18 +203,26 @@ sudo glitch start</code></pre>
     <h3 id="t-linux-x86-gui-ar" class="hidden">x86_64 - نسخة GUI (واجهة رسومية)</h3>
     <pre><code>wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64_gui
 chmod +x glitch_linux_x86_64_gui
-sudo ./glitch_linux_x86_64_gui</code></pre>
+./glitch_linux_x86_64_gui</code></pre>
     <p class="note" id="n-linux-x86-gui-en">URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64_gui</p>
     <p class="note hidden" id="n-linux-x86-gui-ar">الرابط: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64_gui</p>
 
-    <h3 id="t-linux-arm-en">ARM64 - CLI Version (Raspberry Pi, ARM Laptops)</h3>
-    <h3 id="t-linux-arm-ar" class="hidden">ARM64 - نسخة CLI (راسبيري باي، لابتوبات ARM)</h3>
+    <h3 id="t-linux-arm-cli-en">ARM64 - CLI Version (Raspberry Pi, ARM Laptops)</h3>
+    <h3 id="t-linux-arm-cli-ar" class="hidden">ARM64 - نسخة CLI (راسبيري باي، لابتوبات ARM)</h3>
     <pre><code>wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64
 chmod +x glitch_linux_arm64
 sudo mv glitch_linux_arm64 /usr/local/bin/glitch
 sudo glitch start</code></pre>
-    <p class="note" id="n-linux-arm-en">URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64</p>
-    <p class="note hidden" id="n-linux-arm-ar">الرابط: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64</p>
+    <p class="note" id="n-linux-arm-cli-en">URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64</p>
+    <p class="note hidden" id="n-linux-arm-cli-ar">الرابط: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64</p>
+
+    <h3 id="t-linux-arm-gui-en">ARM64 - GUI Version (Raspberry Pi, ARM Laptops)</h3>
+    <h3 id="t-linux-arm-gui-ar" class="hidden">ARM64 - نسخة GUI (راسبيري باي، لابتوبات ARM)</h3>
+    <pre><code>wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64_gui
+chmod +x glitch_linux_arm64_gui
+./glitch_linux_arm64_gui</code></pre>
+    <p class="note" id="n-linux-arm-gui-en">URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64_gui</p>
+    <p class="note hidden" id="n-linux-arm-gui-ar">الرابط: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64_gui</p>
 
     <div class="warning" id="w-linux-en">
       Requires sudo to modify /etc/hosts. Only run on systems you own.
@@ -256,181 +270,60 @@ python glitch_sys.py start</code></pre>
         <th id="th-desc2-en">Description</th>
         <th id="th-desc2-ar" class="hidden">الشرح</th>
       </tr>
-      <tr>
-        <td><code>glitch start</code></td>
-        <td id="e1-en">Start system and block threats</td>
-        <td id="e1-ar" class="hidden">تشغيل النظام وحجب التهديدات</td>
-      </tr>
-      <tr>
-        <td><code>glitch help</code></td>
-        <td id="e2-en">Show all commands</td>
-        <td id="e2-ar" class="hidden">عرض كل الأوامر</td>
-      </tr>
-      <tr>
-        <td><code>glitch ls commands</code></td>
-        <td id="e3-en">Same as help</td>
-        <td id="e3-ar" class="hidden">مثل help</td>
-      </tr>
-      <tr>
-        <td><code>glitch status</code></td>
-        <td id="e4-en">Show OS, architecture, and threat count</td>
-        <td id="e4-ar" class="hidden">عرض النظام والمعمارية وعدد التهديدات</td>
-      </tr>
-      <tr>
-        <td><code>glitch exit</code></td>
-        <td id="e5-en">Unblock all and exit</td>
-        <td id="e5-ar" class="hidden">فك الحجب والخروج</td>
-      </tr>
+      <tr><td><code>glitch start</code></td><td id="e1-en">Start system and block threats</td><td id="e1-ar" class="hidden">تشغيل النظام وحجب التهديدات</td></tr>
+      <tr><td><code>glitch help</code></td><td id="e2-en">Show all commands</td><td id="e2-ar" class="hidden">عرض كل الأوامر</td></tr>
+      <tr><td><code>glitch ls commands</code></td><td id="e3-en">Same as help</td><td id="e3-ar" class="hidden">مثل help</td></tr>
+      <tr><td><code>glitch status</code></td><td id="e4-en">Show OS, architecture, and threat count</td><td id="e4-ar" class="hidden">عرض النظام والمعمارية وعدد التهديدات</td></tr>
+      <tr><td><code>glitch exit</code></td><td id="e5-en">Unblock all and exit</td><td id="e5-ar" class="hidden">فك الحجب والخروج</td></tr>
     </table>
 
     <h3 id="cmd-vpn-en">VPN</h3>
     <h3 id="cmd-vpn-ar" class="hidden">إدارة VPN</h3>
     <table>
-      <tr>
-        <th id="th-cmd2-en">Command</th>
-        <th id="th-cmd2-ar" class="hidden">الأمر</th>
-        <th id="th-desc3-en">Description</th>
-        <th id="th-desc3-ar" class="hidden">الشرح</th>
-      </tr>
-      <tr>
-        <td><code>glitch open vpn</code></td>
-        <td id="v1-en">Show available VPN list</td>
-        <td id="v1-ar" class="hidden">عرض قائمة VPN المتوفرة</td>
-      </tr>
-      <tr>
-        <td><code>glitch start vpn &lt;name&gt;</code></td>
-        <td id="v2-en">Start a specific VPN (e.g. proton)</td>
-        <td id="v2-ar" class="hidden">تشغيل VPN محدد (مثل proton)</td>
-      </tr>
-      <tr>
-        <td><code>glitch start vpn .all</code></td>
-        <td id="v3-en">Start all VPNs</td>
-        <td id="v3-ar" class="hidden">تشغيل كل الـ VPNs</td>
-      </tr>
-      <tr>
-        <td><code>glitch rm vpn &lt;name&gt;</code></td>
-        <td id="v4-en">Stop a specific VPN</td>
-        <td id="v4-ar" class="hidden">إيقاف VPN محدد</td>
-      </tr>
-      <tr>
-        <td><code>glitch rm vpn .all</code></td>
-        <td id="v5-en">Stop all VPNs</td>
-        <td id="v5-ar" class="hidden">إيقاف كل الـ VPNs</td>
-      </tr>
+      <tr><th id="th-cmd2-en">Command</th><th id="th-cmd2-ar" class="hidden">الأمر</th><th id="th-desc3-en">Description</th><th id="th-desc3-ar" class="hidden">الشرح</th></tr>
+      <tr><td><code>glitch open vpn</code></td><td id="v1-en">Show available VPN list</td><td id="v1-ar" class="hidden">عرض قائمة VPN المتوفرة</td></tr>
+      <tr><td><code>glitch start vpn &lt;name&gt;</code></td><td id="v2-en">Start a specific VPN (e.g. proton)</td><td id="v2-ar" class="hidden">تشغيل VPN محدد (مثل proton)</td></tr>
+      <tr><td><code>glitch start vpn .all</code></td><td id="v3-en">Start all VPNs</td><td id="v3-ar" class="hidden">تشغيل كل الـ VPNs</td></tr>
+      <tr><td><code>glitch rm vpn &lt;name&gt;</code></td><td id="v4-en">Stop a specific VPN</td><td id="v4-ar" class="hidden">إيقاف VPN محدد</td></tr>
+      <tr><td><code>glitch rm vpn .all</code></td><td id="v5-en">Stop all VPNs</td><td id="v5-ar" class="hidden">إيقاف كل الـ VPNs</td></tr>
     </table>
 
     <h3 id="cmd-dns-en">DNS</h3>
     <h3 id="cmd-dns-ar" class="hidden">إدارة DNS</h3>
     <table>
-      <tr>
-        <th id="th-cmd3-en">Command</th>
-        <th id="th-cmd3-ar" class="hidden">الأمر</th>
-        <th id="th-desc4-en">Description</th>
-        <th id="th-desc4-ar" class="hidden">الشرح</th>
-      </tr>
-      <tr>
-        <td><code>glitch open dns</code></td>
-        <td id="d1-en">Show available DNS list</td>
-        <td id="d1-ar" class="hidden">عرض قائمة DNS المتوفرة</td>
-      </tr>
-      <tr>
-        <td><code>glitch start dns &lt;name&gt;</code></td>
-        <td id="d2-en">Set a specific DNS (cloudflare, google, quad9)</td>
-        <td id="d2-ar" class="hidden">تعيين DNS محدد (cloudflare, google, quad9)</td>
-      </tr>
-      <tr>
-        <td><code>glitch start dns .all</code></td>
-        <td id="d3-en">Apply all DNS servers</td>
-        <td id="d3-ar" class="hidden">تعيين كل سيرفرات DNS</td>
-      </tr>
-      <tr>
-        <td><code>glitch rm dns</code></td>
-        <td id="d4-en">Reset DNS to default</td>
-        <td id="d4-ar" class="hidden">إرجاع DNS للافتراضي</td>
-      </tr>
+      <tr><th id="th-cmd3-en">Command</th><th id="th-cmd3-ar" class="hidden">الأمر</th><th id="th-desc4-en">Description</th><th id="th-desc4-ar" class="hidden">الشرح</th></tr>
+      <tr><td><code>glitch open dns</code></td><td id="d1-en">Show available DNS list</td><td id="d1-ar" class="hidden">عرض قائمة DNS المتوفرة</td></tr>
+      <tr><td><code>glitch start dns &lt;name&gt;</code></td><td id="d2-en">Set a specific DNS (cloudflare, google, quad9)</td><td id="d2-ar" class="hidden">تعيين DNS محدد (cloudflare, google, quad9)</td></tr>
+      <tr><td><code>glitch start dns .all</code></td><td id="d3-en">Apply all DNS servers</td><td id="d3-ar" class="hidden">تعيين كل سيرفرات DNS</td></tr>
+      <tr><td><code>glitch rm dns</code></td><td id="d4-en">Reset DNS to default</td><td id="d4-ar" class="hidden">إرجاع DNS للافتراضي</td></tr>
     </table>
 
     <h3 id="cmd-block-en">Security</h3>
     <h3 id="cmd-block-ar" class="hidden">الأمان</h3>
     <table>
-      <tr>
-        <th id="th-cmd4-en">Command</th>
-        <th id="th-cmd4-ar" class="hidden">الأمر</th>
-        <th id="th-desc5-en">Description</th>
-        <th id="th-desc5-ar" class="hidden">الشرح</th>
-      </tr>
-      <tr>
-        <td><code>glitch scan &lt;domain&gt;</code></td>
-        <td id="b1-en">Analyze a domain for threats (0-100 score)</td>
-        <td id="b1-ar" class="hidden">تحليل رابط للتهديدات (درجة 0-100)</td>
-      </tr>
-      <tr>
-        <td><code>glitch block</code></td>
-        <td id="b2-en">Block all threats from database</td>
-        <td id="b2-ar" class="hidden">حجب كل التهديدات من القاعدة</td>
-      </tr>
-      <tr>
-        <td><code>glitch unblock</code></td>
-        <td id="b3-en">Remove all blocks</td>
-        <td id="b3-ar" class="hidden">فك كل الحجب</td>
-      </tr>
-      <tr>
-        <td><code>glitch update</code></td>
-        <td id="b4-en">Download latest threat database</td>
-        <td id="b4-ar" class="hidden">تنزيل أحدث قاعدة تهديدات</td>
-      </tr>
+      <tr><th id="th-cmd4-en">Command</th><th id="th-cmd4-ar" class="hidden">الأمر</th><th id="th-desc5-en">Description</th><th id="th-desc5-ar" class="hidden">الشرح</th></tr>
+      <tr><td><code>glitch scan &lt;domain&gt;</code></td><td id="b1-en">Analyze a domain for threats (0-100 score)</td><td id="b1-ar" class="hidden">تحليل رابط للتهديدات (درجة 0-100)</td></tr>
+      <tr><td><code>glitch block</code></td><td id="b2-en">Block all threats from database</td><td id="b2-ar" class="hidden">حجب كل التهديدات من القاعدة</td></tr>
+      <tr><td><code>glitch unblock</code></td><td id="b3-en">Remove all blocks</td><td id="b3-ar" class="hidden">فك كل الحجب</td></tr>
+      <tr><td><code>glitch update</code></td><td id="b4-en">Download latest threat database</td><td id="b4-ar" class="hidden">تنزيل أحدث قاعدة تهديدات</td></tr>
     </table>
 
     <h3 id="cmd-gui-en">GUI</h3>
     <h3 id="cmd-gui-ar" class="hidden">الواجهة الرسومية</h3>
     <table>
-      <tr>
-        <th id="th-cmd5-en">Command</th>
-        <th id="th-cmd5-ar" class="hidden">الأمر</th>
-        <th id="th-desc6-en">Description</th>
-        <th id="th-desc6-ar" class="hidden">الشرح</th>
-      </tr>
-      <tr>
-        <td><code>glitch gui</code></td>
-        <td id="g1-en">Launch graphical interface (needs Kivy)</td>
-        <td id="g1-ar" class="hidden">فتح الواجهة الرسومية (يحتاج Kivy)</td>
-      </tr>
+      <tr><th id="th-cmd5-en">Command</th><th id="th-cmd5-ar" class="hidden">الأمر</th><th id="th-desc6-en">Description</th><th id="th-desc6-ar" class="hidden">الشرح</th></tr>
+      <tr><td><code>glitch gui</code></td><td id="g1-en">Launch graphical interface (needs Kivy)</td><td id="g1-ar" class="hidden">فتح الواجهة الرسومية (يحتاج Kivy)</td></tr>
     </table>
 
     <h3 id="cmd-eggs-en">Hidden (Easter Eggs)</h3>
     <h3 id="cmd-eggs-ar" class="hidden">مخفية (Easter Eggs)</h3>
     <table>
-      <tr>
-        <th id="th-cmd6-en">Command</th>
-        <th id="th-cmd6-ar" class="hidden">الأمر</th>
-        <th id="th-desc7-en">Description</th>
-        <th id="th-desc7-ar" class="hidden">الشرح</th>
-      </tr>
-      <tr>
-        <td><code>glitch neofetch</code></td>
-        <td id="x1-en">Show system info in ASCII art</td>
-        <td id="x1-ar" class="hidden">عرض معلومات النظام برسم ASCII</td>
-      </tr>
-      <tr>
-        <td><code>glitch cowsay &lt;msg&gt;</code></td>
-        <td id="x2-en">A cow says your message</td>
-        <td id="x2-ar" class="hidden">بقرة تقول رسالتك</td>
-      </tr>
-      <tr>
-        <td><code>glitch matrix</code></td>
-        <td id="x3-en">Matrix digital rain effect</td>
-        <td id="x3-ar" class="hidden">تأثير الماتريكس الرقمي</td>
-      </tr>
-      <tr>
-        <td><code>glitch linux</code></td>
-        <td id="x4-en">Show Linux Tux penguin</td>
-        <td id="x4-ar" class="hidden">عرض شعار لينكس (البطريق)</td>
-      </tr>
-      <tr>
-        <td><code>glitch ls</code></td>
-        <td id="x5-en">Fake file listing with hidden folder</td>
-        <td id="x5-ar" class="hidden">قائمة ملفات وهمية مع مجلد مخفي</td>
-      </tr>
+      <tr><th id="th-cmd6-en">Command</th><th id="th-cmd6-ar" class="hidden">الأمر</th><th id="th-desc7-en">Description</th><th id="th-desc7-ar" class="hidden">الشرح</th></tr>
+      <tr><td><code>glitch neofetch</code></td><td id="x1-en">Show system info in ASCII art</td><td id="x1-ar" class="hidden">عرض معلومات النظام برسم ASCII</td></tr>
+      <tr><td><code>glitch cowsay &lt;msg&gt;</code></td><td id="x2-en">A cow says your message</td><td id="x2-ar" class="hidden">بقرة تقول رسالتك</td></tr>
+      <tr><td><code>glitch matrix</code></td><td id="x3-en">Matrix digital rain effect</td><td id="x3-ar" class="hidden">تأثير الماتريكس الرقمي</td></tr>
+      <tr><td><code>glitch linux</code></td><td id="x4-en">Show Linux Tux penguin</td><td id="x4-ar" class="hidden">عرض شعار لينكس (البطريق)</td></tr>
+      <tr><td><code>glitch ls</code></td><td id="x5-en">Fake file listing with hidden folder</td><td id="x5-ar" class="hidden">قائمة ملفات وهمية مع مجلد مخفي</td></tr>
     </table>
   </div>
 
@@ -438,32 +331,11 @@ python glitch_sys.py start</code></pre>
     <h2 id="t-arch-en">Supported Architectures</h2>
     <h2 id="t-arch-ar" class="hidden">المعماريات المدعومة</h2>
     <table>
-      <tr>
-        <th id="th-arch-en">Architecture</th>
-        <th id="th-arch-ar" class="hidden">المعمارية</th>
-        <th id="th-status-en">Status</th>
-        <th id="th-status-ar" class="hidden">الحالة</th>
-      </tr>
-      <tr>
-        <td>x86_64</td>
-        <td id="st1-en">Supported (CLI + GUI)</td>
-        <td id="st1-ar" class="hidden">مدعومة (CLI + GUI)</td>
-      </tr>
-      <tr>
-        <td>arm64 (aarch64)</td>
-        <td id="st2-en">Supported (CLI only)</td>
-        <td id="st2-ar" class="hidden">مدعومة (CLI فقط)</td>
-      </tr>
-      <tr>
-        <td>armv7</td>
-        <td id="st3-en">Supported via Termux (CLI)</td>
-        <td id="st3-ar" class="hidden">مدعومة عبر Termux (CLI)</td>
-      </tr>
-      <tr>
-        <td>i686</td>
-        <td id="st4-en">Limited</td>
-        <td id="st4-ar" class="hidden">محدودة</td>
-      </tr>
+      <tr><th id="th-arch-en">Architecture</th><th id="th-arch-ar" class="hidden">المعمارية</th><th id="th-status-en">Status</th><th id="th-status-ar" class="hidden">الحالة</th></tr>
+      <tr><td>x86_64</td><td id="st1-en">Supported (CLI + GUI)</td><td id="st1-ar" class="hidden">مدعومة (CLI + GUI)</td></tr>
+      <tr><td>arm64 (aarch64)</td><td id="st2-en">Supported (CLI + GUI)</td><td id="st2-ar" class="hidden">مدعومة (CLI + GUI)</td></tr>
+      <tr><td>armv7</td><td id="st3-en">Supported via Termux (CLI)</td><td id="st3-ar" class="hidden">مدعومة عبر Termux (CLI)</td></tr>
+      <tr><td>i686</td><td id="st4-en">Limited</td><td id="st4-ar" class="hidden">محدودة</td></tr>
     </table>
   </div>
 
@@ -471,12 +343,7 @@ python glitch_sys.py start</code></pre>
     <h2 id="t-versions-en">Supported Android Versions</h2>
     <h2 id="t-versions-ar" class="hidden">إصدارات أندرويد المدعومة</h2>
     <table>
-      <tr>
-        <th id="th-ver-en">Android Version</th>
-        <th id="th-ver-ar" class="hidden">إصدار أندرويد</th>
-        <th id="th-ver-st-en">Status</th>
-        <th id="th-ver-st-ar" class="hidden">الحالة</th>
-      </tr>
+      <tr><th id="th-ver-en">Android Version</th><th id="th-ver-ar" class="hidden">إصدار أندرويد</th><th id="th-ver-st-en">Status</th><th id="th-ver-st-ar" class="hidden">الحالة</th></tr>
       <tr><td>Android 7.0+</td><td id="av1-en">Supported (CLI)</td><td id="av1-ar" class="hidden">مدعوم (CLI)</td></tr>
       <tr><td>Android 10+</td><td id="av2-en">Recommended</td><td id="av2-ar" class="hidden">موصى به</td></tr>
       <tr><td>Android 13+</td><td id="av3-en">Supported</td><td id="av3-ar" class="hidden">مدعوم</td></tr>
@@ -488,21 +355,14 @@ python glitch_sys.py start</code></pre>
     <h2 id="t-team-ar" class="hidden">الفريق</h2>
     <p><strong>Karam Al-Bari</strong> - Developer</p>
     <p><strong>T STUDIO</strong> - Development Team</p>
-    <p id="p-ai-en" style="margin-top: 12px; color: #666; font-size: 0.9em;">
-      Development assisted by DeepSeek AI.
-    </p>
-    <p id="p-ai-ar" class="hidden" style="margin-top: 12px; color: #666; font-size: 0.9em;">
-      تم تطوير هذا المشروع بمساعدة ذكاء DeepSeek الاصطناعي.
-    </p>
+    <p id="p-ai-en" style="margin-top: 12px; color: #666; font-size: 0.9em;">Development assisted by DeepSeek AI.</p>
+    <p id="p-ai-ar" class="hidden" style="margin-top: 12px; color: #666; font-size: 0.9em;">تم تطوير هذا المشروع بمساعدة ذكاء DeepSeek الاصطناعي.</p>
   </div>
 
   <footer>
     <p>2026 T STUDIO - All rights reserved</p>
     <p>Made in Iraq</p>
-    <p style="margin-top: 8px;">
-      Built with assistance from
-      <a href="https://chat.deepseek.com" target="_blank">DeepSeek AI</a>
-    </p>
+    <p style="margin-top: 8px;">Built with assistance from <a href="https://chat.deepseek.com" target="_blank">DeepSeek AI</a></p>
   </footer>
 </div>
 
@@ -528,4 +388,4 @@ function setLang(lang) {
 }
 </script>
 </body>
-         </html>
+</html>
