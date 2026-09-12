@@ -6,6 +6,7 @@
 <title>Glitch Sys - VPN, DNS, Protection</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   body {
     font-family: 'Courier New', monospace;
     background: #0a0a0a;
@@ -13,8 +14,20 @@
     line-height: 1.7;
     padding: 20px;
     min-height: 100vh;
+    overflow-x: hidden;
   }
-  .container { max-width: 960px; margin: 0 auto; }
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(0, 255, 0, 0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(0, 136, 0, 0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+  }
+  .container { max-width: 960px; margin: 0 auto; position: relative; z-index: 1; }
+
   header {
     padding: 40px 0;
     border-bottom: 2px solid #008800;
@@ -23,9 +36,35 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 16px;
+    position: relative;
   }
-  h1 { color: #00ff00; font-size: 2.5em; margin-bottom: 8px; }
+  header::after {
+    content: "";
+    position: absolute;
+    bottom: -2px; left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00ff00, transparent);
+    animation: scan 3s linear infinite;
+  }
+  @keyframes scan {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  h1 {
+    color: #00ff00;
+    font-size: 2.5em;
+    margin-bottom: 8px;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5), 0 0 20px rgba(0, 255, 0, 0.3);
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  @keyframes glow {
+    from { text-shadow: 0 0 10px rgba(0, 255, 0, 0.5); }
+    to { text-shadow: 0 0 20px rgba(0, 255, 0, 0.9), 0 0 30px rgba(0, 255, 0, 0.5); }
+  }
   .subtitle { color: #888; font-size: 1em; }
+
   .lang-switch button {
     background: #111;
     color: #00ff00;
@@ -35,15 +74,30 @@
     cursor: pointer;
     font-family: 'Courier New', monospace;
     font-size: 0.9em;
+    transition: all 0.3s;
   }
-  .lang-switch button:hover { background: #008800; }
-  .lang-switch button.active { background: #008800; color: #00ff00; }
+  .lang-switch button:hover {
+    background: #008800;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+  }
+  .lang-switch button.active {
+    background: #008800;
+    color: #00ff00;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
+  }
+
   .section {
     background: #111;
     border: 1px solid #222;
     border-radius: 6px;
     padding: 24px;
     margin: 24px 0;
+    transition: all 0.3s;
+    position: relative;
+  }
+  .section:hover {
+    border-color: #008800;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
   }
   .section h2 {
     color: #00ff00;
@@ -58,6 +112,7 @@
     font-size: 1.1em;
   }
   .section p { margin-bottom: 12px; }
+
   pre {
     background: #000;
     border: 1px solid #008800;
@@ -68,15 +123,30 @@
     font-family: 'Courier New', monospace;
     font-size: 0.9em;
     margin: 12px 0;
+    position: relative;
   }
+  pre::before {
+    content: "$";
+    position: absolute;
+    top: 8px; right: 8px;
+    color: #008800;
+    opacity: 0.5;
+    font-size: 1.2em;
+  }
+
   code { font-family: 'Courier New', monospace; }
+
   .note {
     color: #888;
     font-size: 0.9em;
     margin-top: 8px;
     font-style: italic;
     word-break: break-all;
+    padding: 8px;
+    background: #0a0a0a;
+    border-left: 2px solid #444;
   }
+
   .warning {
     background: #1a0f00;
     border-left: 3px solid #ff8800;
@@ -85,20 +155,54 @@
     color: #cc8844;
     font-size: 0.9em;
   }
+
   table { width: 100%; border-collapse: collapse; margin: 12px 0; }
   th, td { padding: 10px; text-align: left; border-bottom: 1px solid #222; }
   th { color: #00ff00; }
+  tr { transition: background 0.2s; }
+  tr:hover { background: rgba(0, 136, 0, 0.1); }
   td code { color: #7ee787; }
+
   .hidden { display: none; }
+
   .badge {
     display: inline-block;
     padding: 2px 8px;
     border-radius: 3px;
     font-size: 0.85em;
     margin-left: 6px;
+    font-weight: bold;
   }
   .badge-cli { background: #1a3a1a; color: #7ee787; border: 1px solid #008800; }
   .badge-gui { background: #1a1a3a; color: #7e9eff; border: 1px solid #0044aa; }
+  .badge-source { background: #3a3a1a; color: #ffe77e; border: 1px solid #aa8800; }
+
+  .copy-btn {
+    position: absolute;
+    top: 8px; right: 8px;
+    background: #008800;
+    color: #00ff00;
+    border: none;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8em;
+    border-radius: 3px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  pre:hover .copy-btn { opacity: 1; }
+  .copy-btn:hover { background: #00aa00; }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+  @keyframes fadeIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   footer {
     text-align: center;
     padding: 24px;
@@ -109,6 +213,29 @@
   }
   footer a { color: #00aa00; text-decoration: none; }
   footer a:hover { text-decoration: underline; }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .team-card {
+    background: #0a0a0a;
+    border: 1px solid #222;
+    padding: 16px;
+    border-radius: 4px;
+    text-align: center;
+    transition: all 0.3s;
+  }
+  .team-card:hover {
+    border-color: #008800;
+    transform: translateY(-2px);
+  }
+  .team-card .role { color: #00aa00; font-size: 0.9em; }
+
+  .status-ok { color: #7ee787; font-weight: bold; }
+  .status-no { color: #ff7e7e; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -118,7 +245,7 @@
       <h1>Glitch Sys</h1>
       <p class="subtitle" id="sub-en">VPN | DNS | Protection</p>
       <p class="subtitle hidden" id="sub-ar">VPN | DNS | الحماية</p>
-      <p class="subtitle">Version 0.2</p>
+      <p class="subtitle">Version 0.3</p>
     </div>
     <div class="lang-switch">
       <button id="btn-en" class="active" onclick="setLang('en')">English</button>
@@ -126,7 +253,7 @@
     </div>
   </header>
 
-  <div class="section">
+  <div class="section fade-in">
     <h2 id="t-desc-en">About</h2>
     <h2 id="t-desc-ar" class="hidden">حول التطبيق</h2>
     <p id="p-desc-en">
@@ -141,7 +268,7 @@
     </p>
   </div>
 
-  <div class="section">
+  <div class="section fade-in">
     <h2 id="t-avail-en">Available Versions</h2>
     <h2 id="t-avail-ar" class="hidden">النسخ المتوفرة</h2>
     <table>
@@ -167,26 +294,20 @@
       </tr>
       <tr>
         <td>Linux ARM64</td>
-        <td><span class="badge badge-cli">CLI</span></td>
-        <td id="sz3-en">~25 MB</td>
-        <td id="sz3-ar" class="hidden">~25 MB</td>
-      </tr>
-      <tr>
-        <td>Linux ARM64</td>
-        <td><span class="badge badge-gui">GUI</span></td>
-        <td id="sz5-en">~120 MB</td>
-        <td id="sz5-ar" class="hidden">~120 MB</td>
+        <td><span class="badge badge-source">Source</span></td>
+        <td id="sz3-en">Python</td>
+        <td id="sz3-ar" class="hidden">Python</td>
       </tr>
       <tr>
         <td>Android (Termux)</td>
-        <td><span class="badge badge-cli">CLI</span></td>
-        <td id="sz4-en">Python script</td>
-        <td id="sz4-ar" class="hidden">سكربت Python</td>
+        <td><span class="badge badge-source">Source</span></td>
+        <td id="sz4-en">Python</td>
+        <td id="sz4-ar" class="hidden">Python</td>
       </tr>
     </table>
   </div>
 
-  <div class="section">
+  <div class="section fade-in">
     <h2 id="t-linux-en">Linux Installation</h2>
     <h2 id="t-linux-ar" class="hidden">التنزيل على Linux</h2>
 
@@ -195,34 +316,26 @@
     <pre><code>wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64
 chmod +x glitch_linux_x86_64
 sudo mv glitch_linux_x86_64 /usr/local/bin/glitch
-sudo glitch start</code></pre>
-    <p class="note" id="n-linux-x86-cli-en">URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64</p>
-    <p class="note hidden" id="n-linux-x86-cli-ar">الرابط: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64</p>
+sudo glitch start</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+    <p class="note" id="n-linux-x86-cli-en">Direct URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64</p>
+    <p class="note hidden" id="n-linux-x86-cli-ar">الرابط المباشر: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64</p>
 
     <h3 id="t-linux-x86-gui-en">x86_64 - GUI Version (Graphical Interface)</h3>
     <h3 id="t-linux-x86-gui-ar" class="hidden">x86_64 - نسخة GUI (واجهة رسومية)</h3>
     <pre><code>wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64_gui
 chmod +x glitch_linux_x86_64_gui
-./glitch_linux_x86_64_gui</code></pre>
-    <p class="note" id="n-linux-x86-gui-en">URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64_gui</p>
-    <p class="note hidden" id="n-linux-x86-gui-ar">الرابط: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64_gui</p>
+./glitch_linux_x86_64_gui</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+    <p class="note" id="n-linux-x86-gui-en">Direct URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64_gui</p>
+    <p class="note hidden" id="n-linux-x86-gui-ar">الرابط المباشر: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64_gui</p>
 
-    <h3 id="t-linux-arm-cli-en">ARM64 - CLI Version (Raspberry Pi, ARM Laptops)</h3>
-    <h3 id="t-linux-arm-cli-ar" class="hidden">ARM64 - نسخة CLI (راسبيري باي، لابتوبات ARM)</h3>
-    <pre><code>wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64
-chmod +x glitch_linux_arm64
-sudo mv glitch_linux_arm64 /usr/local/bin/glitch
-sudo glitch start</code></pre>
-    <p class="note" id="n-linux-arm-cli-en">URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64</p>
-    <p class="note hidden" id="n-linux-arm-cli-ar">الرابط: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64</p>
-
-    <h3 id="t-linux-arm-gui-en">ARM64 - GUI Version (Raspberry Pi, ARM Laptops)</h3>
-    <h3 id="t-linux-arm-gui-ar" class="hidden">ARM64 - نسخة GUI (راسبيري باي، لابتوبات ARM)</h3>
-    <pre><code>wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64_gui
-chmod +x glitch_linux_arm64_gui
-./glitch_linux_arm64_gui</code></pre>
-    <p class="note" id="n-linux-arm-gui-en">URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64_gui</p>
-    <p class="note hidden" id="n-linux-arm-gui-ar">الرابط: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_arm64_gui</p>
+    <h3 id="t-linux-arm-en">ARM64 - Source Code (Raspberry Pi, ARM Laptops)</h3>
+    <h3 id="t-linux-arm-ar" class="hidden">ARM64 - الكود المصدري (راسبيري باي، لابتوبات ARM)</h3>
+    <pre><code>git clone https://github.com/karamuser/glitch_sys.git
+cd glitch_sys/src
+pip install rich
+python glitch_sys.py start</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+    <p class="note" id="n-linux-arm-en">For GUI: pip install kivy && python glitch_sys.py gui</p>
+    <p class="note hidden" id="n-linux-arm-ar">للواجهة: pip install kivy && python glitch_sys.py gui</p>
 
     <div class="warning" id="w-linux-en">
       Requires sudo to modify /etc/hosts. Only run on systems you own.
@@ -232,7 +345,7 @@ chmod +x glitch_linux_arm64_gui
     </div>
   </div>
 
-  <div class="section">
+  <div class="section fade-in">
     <h2 id="t-android-en">Android (Termux)</h2>
     <h2 id="t-android-ar" class="hidden">أندرويد (Termux)</h2>
     <p id="p-android-en">Download Termux from F-Droid or GitHub, then run:</p>
@@ -242,7 +355,7 @@ pkg install python git -y
 pip install rich
 git clone https://github.com/karamuser/glitch_sys.git
 cd glitch_sys/src
-python glitch_sys.py start</code></pre>
+python glitch_sys.py start</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
     <p class="note" id="n-android-en">Termux F-Droid: https://f-droid.org/packages/com.termux/</p>
     <p class="note hidden" id="n-android-ar">Termux من F-Droid: https://f-droid.org/packages/com.termux/</p>
     <p class="note" id="n-android-gh-en">Termux Latest: https://github.com/termux/termux-app/releases/latest</p>
@@ -257,22 +370,16 @@ python glitch_sys.py start</code></pre>
     </div>
   </div>
 
-  <div class="section">
+  <div class="section fade-in">
     <h2 id="t-cmd-en">Commands Reference</h2>
     <h2 id="t-cmd-ar" class="hidden">مرجع الأوامر</h2>
 
     <h3 id="cmd-basic-en">Basic</h3>
     <h3 id="cmd-basic-ar" class="hidden">الأوامر الأساسية</h3>
     <table>
-      <tr>
-        <th id="th-cmd-en">Command</th>
-        <th id="th-cmd-ar" class="hidden">الأمر</th>
-        <th id="th-desc2-en">Description</th>
-        <th id="th-desc2-ar" class="hidden">الشرح</th>
-      </tr>
+      <tr><th id="th-cmd-en">Command</th><th id="th-cmd-ar" class="hidden">الأمر</th><th id="th-desc2-en">Description</th><th id="th-desc2-ar" class="hidden">الشرح</th></tr>
       <tr><td><code>glitch start</code></td><td id="e1-en">Start system and block threats</td><td id="e1-ar" class="hidden">تشغيل النظام وحجب التهديدات</td></tr>
       <tr><td><code>glitch help</code></td><td id="e2-en">Show all commands</td><td id="e2-ar" class="hidden">عرض كل الأوامر</td></tr>
-      <tr><td><code>glitch ls commands</code></td><td id="e3-en">Same as help</td><td id="e3-ar" class="hidden">مثل help</td></tr>
       <tr><td><code>glitch status</code></td><td id="e4-en">Show OS, architecture, and threat count</td><td id="e4-ar" class="hidden">عرض النظام والمعمارية وعدد التهديدات</td></tr>
       <tr><td><code>glitch exit</code></td><td id="e5-en">Unblock all and exit</td><td id="e5-ar" class="hidden">فك الحجب والخروج</td></tr>
     </table>
@@ -308,13 +415,6 @@ python glitch_sys.py start</code></pre>
       <tr><td><code>glitch update</code></td><td id="b4-en">Download latest threat database</td><td id="b4-ar" class="hidden">تنزيل أحدث قاعدة تهديدات</td></tr>
     </table>
 
-    <h3 id="cmd-gui-en">GUI</h3>
-    <h3 id="cmd-gui-ar" class="hidden">الواجهة الرسومية</h3>
-    <table>
-      <tr><th id="th-cmd5-en">Command</th><th id="th-cmd5-ar" class="hidden">الأمر</th><th id="th-desc6-en">Description</th><th id="th-desc6-ar" class="hidden">الشرح</th></tr>
-      <tr><td><code>glitch gui</code></td><td id="g1-en">Launch graphical interface (needs Kivy)</td><td id="g1-ar" class="hidden">فتح الواجهة الرسومية (يحتاج Kivy)</td></tr>
-    </table>
-
     <h3 id="cmd-eggs-en">Hidden (Easter Eggs)</h3>
     <h3 id="cmd-eggs-ar" class="hidden">مخفية (Easter Eggs)</h3>
     <table>
@@ -327,34 +427,31 @@ python glitch_sys.py start</code></pre>
     </table>
   </div>
 
-  <div class="section">
+  <div class="section fade-in">
     <h2 id="t-arch-en">Supported Architectures</h2>
     <h2 id="t-arch-ar" class="hidden">المعماريات المدعومة</h2>
     <table>
       <tr><th id="th-arch-en">Architecture</th><th id="th-arch-ar" class="hidden">المعمارية</th><th id="th-status-en">Status</th><th id="th-status-ar" class="hidden">الحالة</th></tr>
-      <tr><td>x86_64</td><td id="st1-en">Supported (CLI + GUI)</td><td id="st1-ar" class="hidden">مدعومة (CLI + GUI)</td></tr>
-      <tr><td>arm64 (aarch64)</td><td id="st2-en">Supported (CLI + GUI)</td><td id="st2-ar" class="hidden">مدعومة (CLI + GUI)</td></tr>
-      <tr><td>armv7</td><td id="st3-en">Supported via Termux (CLI)</td><td id="st3-ar" class="hidden">مدعومة عبر Termux (CLI)</td></tr>
+      <tr><td>x86_64</td><td id="st1-en">Binary (CLI + GUI)</td><td id="st1-ar" class="hidden">ثنائي (CLI + GUI)</td></tr>
+      <tr><td>arm64 (aarch64)</td><td id="st2-en">Source code (CLI + GUI)</td><td id="st2-ar" class="hidden">كود مصدري (CLI + GUI)</td></tr>
+      <tr><td>armv7</td><td id="st3-en">Termux (CLI)</td><td id="st3-ar" class="hidden">Termux (CLI)</td></tr>
       <tr><td>i686</td><td id="st4-en">Limited</td><td id="st4-ar" class="hidden">محدودة</td></tr>
     </table>
   </div>
 
-  <div class="section">
-    <h2 id="t-versions-en">Supported Android Versions</h2>
-    <h2 id="t-versions-ar" class="hidden">إصدارات أندرويد المدعومة</h2>
-    <table>
-      <tr><th id="th-ver-en">Android Version</th><th id="th-ver-ar" class="hidden">إصدار أندرويد</th><th id="th-ver-st-en">Status</th><th id="th-ver-st-ar" class="hidden">الحالة</th></tr>
-      <tr><td>Android 7.0+</td><td id="av1-en">Supported (CLI)</td><td id="av1-ar" class="hidden">مدعوم (CLI)</td></tr>
-      <tr><td>Android 10+</td><td id="av2-en">Recommended</td><td id="av2-ar" class="hidden">موصى به</td></tr>
-      <tr><td>Android 13+</td><td id="av3-en">Supported</td><td id="av3-ar" class="hidden">مدعوم</td></tr>
-    </table>
-  </div>
-
-  <div class="section">
+  <div class="section fade-in">
     <h2 id="t-team-en">Team</h2>
     <h2 id="t-team-ar" class="hidden">الفريق</h2>
-    <p><strong>Karam Al-Bari</strong> - Developer</p>
-    <p><strong>T STUDIO</strong> - Development Team</p>
+    <div class="team-grid">
+      <div class="team-card">
+        <strong>Karam Al-Bari</strong>
+        <p class="role">Developer</p>
+      </div>
+      <div class="team-card">
+        <strong>T STUDIO</strong>
+        <p class="role">Development Team</p>
+      </div>
+    </div>
     <p id="p-ai-en" style="margin-top: 12px; color: #666; font-size: 0.9em;">Development assisted by DeepSeek AI.</p>
     <p id="p-ai-ar" class="hidden" style="margin-top: 12px; color: #666; font-size: 0.9em;">تم تطوير هذا المشروع بمساعدة ذكاء DeepSeek الاصطناعي.</p>
   </div>
@@ -386,6 +483,10 @@ function setLang(lang) {
     document.documentElement.dir = 'ltr';
   }
 }
-</script>
-</body>
-</html>
+
+function copyCode(btn) {
+  const pre = btn.parentElement;
+  const code = pre.querySelector('code').innerText;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'Copied!';
+ 
