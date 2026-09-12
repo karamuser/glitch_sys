@@ -75,6 +75,7 @@
     font-size: 0.9em;
     margin-top: 8px;
     font-style: italic;
+    word-break: break-all;
   }
   .warning {
     background: #1a0f00;
@@ -280,8 +281,8 @@ glitch exit                 Exit</code></pre>
 
 <script>
 function setLang(lang) {
-  const en = document.querySelectorAll('[id$="-en"]');
-  const ar = document.querySelectorAll('[id$="-ar"]');
+  const en = document.querySelectorAll('[id$="-en"]:not(button)');
+  const ar = document.querySelectorAll('[id$="-ar"]:not(button)');
   if (lang === 'ar') {
     en.forEach(e => e.classList.add('hidden'));
     ar.forEach(e => e.classList.remove('hidden'));
