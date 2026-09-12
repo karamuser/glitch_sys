@@ -23,6 +23,7 @@ else:
 BASE_DIR.mkdir(parents=True, exist_ok=True)
 DB_FILE = BASE_DIR / "threat_db.json"
 LOG_FILE = BASE_DIR / "glitch.log"
+CONFIG_FILE = BASE_DIR / "config.json"
 
 if IS_WINDOWS:
     HOSTS_FILE = Path(os.environ.get("SystemRoot", "C:\\Windows")) / "System32" / "drivers" / "etc" / "hosts"
@@ -31,7 +32,6 @@ else:
 
 VPN_LIST = ["proton", "nord", "express", "mullvad"]
 DNS_CONFIG = {"cloudflare": "1.1.1.1", "google": "8.8.8.8", "quad9": "9.9.9.9"}
-
 MARKER_START = "# ===== Glitch Sys Block START ====="
 MARKER_END = "# ===== Glitch Sys Block END ====="
 
@@ -43,23 +43,25 @@ SUSPICIOUS_KEYWORDS = ["login", "verify", "account", "update", "secure", "bank",
 URL_SHORTENERS = ["bit.ly", "tinyurl.com", "goo.gl", "t.co", "ow.ly", "is.gd",
                   "buff.ly", "adf.ly", "shorte.st", "bc.vc"]
 
+DEFAULT_CONFIG = {
+    "lang": "en",
+    "theme": "dark"
+}
+
 try:
     from rich.console import Console
     from rich.table import Table
     from rich.panel import Panel
     console = Console()
-    HAS_RICH = True
 except ImportError:
-    HAS_RICH = False
     class Console:
         def print(self, msg=""):
-            clean = re.sub(r"\[/?[a-zA-Z0-9 _=#]+\]", "", str(msg))
-            print(clean)
+            print(re.sub(r"\[/?[a-zA-Z0-9 _=#]+\]", "", str(msg)))
     console = Console()
     class Table:
-        def __init__(self, title=""): self.title = title; self.rows = []
+        def __init__(self, title=""): self.rows = []
         def add_column(self, *a, **k): pass
-        def add_row(self, *a): self.rows.append(a)
+        def add_row(self, *a): pass
     class Panel:
         def __init__(self, text="", title="", border_style=""): self.text = text
         def __str__(self): return self.text
@@ -68,15 +70,34 @@ try:
     from kivy.app import App
     from kivy.uix.screenmanager import ScreenManager, Screen
     from kivy.uix.boxlayout import BoxLayout
+    from kivy.uix.gridlayout import GridLayout
     from kivy.uix.button import Button
     from kivy.uix.label import Label
     from kivy.uix.textinput import TextInput
     from kivy.uix.scrollview import ScrollView
+    from kivy.uix.spinner import Spinner
     from kivy.core.window import Window
     from kivy.utils import get_color_from_hex
     HAS_KIVY = True
 except ImportError:
     HAS_KIVY = False
+
+
+def load_config():
+    if CONFIG_FILE.exists():
+        try:
+            with open(CONFIG_FILE) as f:
+                return {**DEFAULT_CONFIG, **json.load(f)}
+        except Exception:
+            return dict(DEFAULT_CONFIG)
+    return dict(DEFAULT_CONFIG)
+
+def save_config(cfg):
+    try:
+        with open(CONFIG_FILE, "w") as f:
+            json.dump(cfg, f, indent=2)
+    except Exception:
+        pass
 
 def log(msg):
     try:
@@ -172,7 +193,7 @@ def block_domains(domains):
         log(f"Blocked {len(domains)}")
         return True, f"Blocked {len(domains)} domains"
     except PermissionError:
-        return False, "Need root/admin to modify hosts file"
+        return False, "Need root/admin"
     except Exception as e:
         return False, str(e)
 
@@ -186,7 +207,6 @@ def unblock_all():
         before = c.split(MARKER_START)[0]
         after = c.split(MARKER_END)[-1]
         HOSTS_FILE.write_text(before + after, encoding="utf-8")
-        log("Unblocked")
         return True, "Unblocked all"
     except PermissionError:
         return False, "Need root/admin"
@@ -197,14 +217,13 @@ def start_vpn(name):
     if name not in VPN_LIST:
         return False, f"VPN {name} not found"
     if IS_ANDROID:
-        return False, "On Android: use a VPN app from settings"
+        return False, "On Android: use a VPN app"
     if IS_WINDOWS:
         return False, "On Windows: install OpenVPN GUI"
     try:
         subprocess.Popen(["sudo", "openvpn", "--config", f"{name}.ovpn"],
                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         time.sleep(2)
-        log(f"VPN {name} started")
         return True, f"VPN {name} started"
     except FileNotFoundError:
         return False, "openvpn not installed"
@@ -224,13 +243,6 @@ def stop_vpn(name):
     except Exception:
         return False, f"{name} not running"
 
-def start_all_vpns():
-    results = []
-    for v in VPN_LIST:
-        ok, msg = start_vpn(v)
-        results.append(msg)
-    return results
-
 def set_dns(name):
     if name not in DNS_CONFIG:
         return False, f"DNS {name} not found"
@@ -244,7 +256,6 @@ def set_dns(name):
             subprocess.run(["networksetup", "-setdnsservers", "Wi-Fi", ip], check=True)
         else:
             subprocess.run(["sudo", "resolvectl", "dns", "default", ip], check=True)
-        log(f"DNS set to {name}")
         return True, f"DNS set to {name} ({ip})"
     except Exception as e:
         return False, str(e)
@@ -263,68 +274,69 @@ def reset_dns():
     except Exception as e:
         return False, str(e)
 
-def set_all_dns():
-    results = []
-    for n in DNS_CONFIG:
-        ok, msg = set_dns(n)
-        results.append(msg)
-    return results
+
+def show_help():
+    text = f"""
+{APP_NAME} {APP_VERSION} - Commands
+
+glitch start                Start system
+glitch open vpn             Show VPN list
+glitch open dns             Show DNS list
+glitch start vpn <name>     Start a VPN
+glitch start vpn .all       Start all VPNs
+glitch start dns <name>     Set DNS
+glitch start dns .all       Apply all DNS
+glitch rm vpn <name>        Stop a VPN
+glitch rm vpn .all          Stop all VPNs
+glitch rm dns               Reset DNS
+glitch scan <domain>        Analyze a domain
+glitch block                Block threats
+glitch unblock              Unblock all
+glitch status               System status
+glitch update               Update threat DB
+glitch gui                  Launch GUI
+glitch ls commands          Show commands
+glitch exit                 Exit
+
+Hidden: neofetch, cowsay, matrix, linux, ls
+"""
+    console.print(Panel(text, title="Help", border_style="cyan"))
 
 def egg_neofetch():
     return [
-        f"        .--.        {APP_NAME} {APP_VERSION}",
-        f"       |o_o |       OS: {'Android' if IS_ANDROID else 'Windows' if IS_WINDOWS else 'macOS' if IS_MAC else 'Linux'}",
-        f"       |:_/ |       Kernel: {platform.release()}",
-        f"      //   \\ \\      Arch: {platform.machine()}",
-        f"     (|     | )     Python: {platform.python_version()}",
-        f"    /'\\_   _/`\\     User: {os.environ.get('USER', os.environ.get('USERNAME', 'unknown'))}",
-        f"    \\___)=(___/     Shell: Glitch Sys CLI",
+        "        .--.        " + f"{APP_NAME} {APP_VERSION}",
+        "       |o_o |       OS: " + ("Android" if IS_ANDROID else "Windows" if IS_WINDOWS else "macOS" if IS_MAC else "Linux"),
+        "       |:_/ |       Kernel: " + platform.release(),
+        "      //   \\ \\      Arch: " + platform.machine(),
+        "     (|     | )     Python: " + platform.python_version(),
+        "    /'\\_   _/`\\     User: " + os.environ.get("USER", os.environ.get("USERNAME", "unknown")),
+        "    \\___)=(___/     Shell: Glitch Sys CLI"
     ]
 
-def egg_cowsay(msg="Glitch Sys"):
+def egg_cowsay(msg):
     top = " " + "_" * (len(msg) + 2)
     mid = f"< {msg} >"
     bot = " " + "-" * (len(msg) + 2)
-    return [
-        top, mid, bot,
-        "        \\   ^__^",
-        "         \\  (oo)\\_______",
-        "            (__)\\       )\\/\\",
-        "                ||----w |",
-        "                ||     ||"
-    ]
+    return [top, mid, bot,
+            "        \\   ^__^",
+            "         \\  (oo)\\_______",
+            "            (__)\\       )\\/\\",
+            "                ||----w |",
+            "                ||     ||"]
 
 def egg_matrix():
     import random, string
-    lines = []
-    for _ in range(10):
-        line = "".join(random.choice(string.ascii_letters + string.digits) for _ in range(60))
-        lines.append(line)
-    return lines
+    return ["".join(random.choice(string.ascii_letters + string.digits) for _ in range(60)) for _ in range(10)]
 
 def egg_linux():
-    return [
-        "        .--.",
-        "       |o_o |",
-        "       |:_/ |      Linux Tux",
-        "      //   \\ \\ ",
-        "     (|     | )",
-        "    /'\\_   _/`\\",
-        "    \\___)=(___/",
-    ]
+    return ["        .--.", "       |o_o |", "       |:_/ |      Linux Tux",
+            "      //   \\ \\ ", "     (|     | )", "    /'\\_   _/`\\", "    \\___)=(___/"]
 
 def egg_ls():
-    return [
-        "total 42",
-        "drwxr-xr-x  glitch_sys/",
-        "drwxr-xr-x  core/",
-        "drwxr-xr-x  ui/",
-        "drwxr-xr-x  data/",
-        "-rw-r--r--  main.py",
-        "-rw-r--r--  README.md",
-        "-rw-r--r--  requirements.txt",
-        "-rw-r--r--  .secret_folder/  (hidden)",
-    ]
+    return ["total 42", "drwxr-xr-x  glitch_sys/", "drwxr-xr-x  core/", "drwxr-xr-x  ui/",
+            "drwxr-xr-x  data/", "-rw-r--r--  main.py", "-rw-r--r--  README.md",
+            "-rw-r--r--  requirements.txt", "-rw-r--r--  .secret_folder/  (hidden)"]
+
 
 def run_command(cmd_str):
     parts = cmd_str.strip().split()
@@ -333,120 +345,69 @@ def run_command(cmd_str):
     main = parts[0].lower()
     out = []
 
-    if main == "help":
-        out.append(f"{APP_NAME} {APP_VERSION} - Commands")
-        out.append("")
-        out.append("glitch start                - Start system")
-        out.append("glitch open vpn             - Show VPN list")
-        out.append("glitch open dns             - Show DNS list")
-        out.append("glitch start vpn <name>     - Start a VPN")
-        out.append("glitch start vpn .all       - Start all VPNs")
-        out.append("glitch start dns <name>     - Set DNS")
-        out.append("glitch start dns .all       - Apply all DNS")
-        out.append("glitch rm vpn <name>        - Stop a VPN")
-        out.append("glitch rm vpn .all          - Stop all VPNs")
-        out.append("glitch rm dns               - Reset DNS")
-        out.append("glitch scan <domain>        - Analyze a domain")
-        out.append("glitch block                - Block threats")
-        out.append("glitch unblock              - Unblock all")
-        out.append("glitch status               - System status")
-        out.append("glitch update               - Update threat DB")
-        out.append("glitch gui                  - Launch GUI")
-        out.append("glitch ls commands          - Show commands")
-        out.append("glitch exit                 - Exit")
-        out.append("")
-        out.append("Hidden: neofetch, cowsay, matrix, linux, ls")
-
+    if main == "help" or (main == "ls" and len(parts) > 1 and parts[1] == "commands"):
+        show_help()
+        return ["(see above)"]
     elif main == "open" and len(parts) > 1:
         if parts[1] == "vpn":
             out.append("VPN List:")
-            for v in VPN_LIST:
-                out.append(f"  {v} - Ready")
+            for v in VPN_LIST: out.append(f"  {v} - Ready")
         elif parts[1] == "dns":
             out.append("DNS List:")
-            for n, ip in DNS_CONFIG.items():
-                out.append(f"  {n} - {ip}")
-
+            for n, ip in DNS_CONFIG.items(): out.append(f"  {n} - {ip}")
     elif main == "start" and len(parts) > 1:
         sub = parts[1].lower()
         if sub == "vpn":
             if len(parts) > 2 and parts[2] == ".all":
-                for m in start_all_vpns(): out.append(m)
+                for v in VPN_LIST:
+                    ok, msg = start_vpn(v); out.append(msg)
             elif len(parts) > 2:
                 ok, msg = start_vpn(parts[2]); out.append(msg)
         elif sub == "dns":
             if len(parts) > 2 and parts[2] == ".all":
-                for m in set_all_dns(): out.append(m)
+                for n in DNS_CONFIG:
+                    ok, msg = set_dns(n); out.append(msg)
             elif len(parts) > 2:
                 ok, msg = set_dns(parts[2]); out.append(msg)
-
     elif main == "rm" and len(parts) > 1:
         sub = parts[1].lower()
         if sub == "vpn":
-            name = parts[2] if len(parts) > 2 else ""
+            name = parts[2] if len(parts) > 2 else ".all"
             ok, msg = stop_vpn(name); out.append(msg)
         elif sub == "dns":
             ok, msg = reset_dns(); out.append(msg)
-
     elif main == "scan" and len(parts) > 1:
         score, reasons, label = analyze_domain(parts[1])
         out.append(f"{parts[1]}: {score}/100 [{label}]")
-        for r in reasons:
-            out.append(f"  - {r}")
-
+        for r in reasons: out.append(f"  - {r}")
     elif main == "block":
         threats = load_threats()
-        if not threats:
-            threats = fetch_threats()
-        ok, msg = block_domains(threats)
-        out.append(msg)
-
+        if not threats: threats = fetch_threats()
+        ok, msg = block_domains(threats); out.append(msg)
     elif main == "unblock":
         ok, msg = unblock_all(); out.append(msg)
-
     elif main == "update":
         threats = fetch_threats()
         if threats:
             ok, msg = block_domains(threats); out.append(msg)
-
     elif main == "status":
         os_name = "Android" if IS_ANDROID else "Windows" if IS_WINDOWS else "macOS" if IS_MAC else "Linux"
         out.append(f"OS: {os_name}")
         out.append(f"Arch: {platform.machine()}")
         out.append(f"Root: {'yes' if is_root() else 'no'}")
-        out.append(f"Threats DB: {len(load_threats())} entries")
+        out.append(f"Threats: {len(load_threats())}")
         out.append(f"Hosts: {HOSTS_FILE}")
-
-    elif main == "neofetch":
-        out.extend(egg_neofetch())
-
+    elif main == "neofetch": out.extend(egg_neofetch())
     elif main == "cowsay":
         msg = " ".join(parts[1:]) if len(parts) > 1 else "Glitch Sys"
         out.extend(egg_cowsay(msg))
-
-    elif main == "matrix":
-        out.extend(egg_matrix())
-
-    elif main == "linux":
-        out.extend(egg_linux())
-
-    elif main == "ls":
-        if len(parts) > 1 and parts[1] == "commands":
-            out.extend(run_command("help"))
-        else:
-            out.extend(egg_ls())
-
-    elif main == "gui":
-        out.append("Launching GUI...")
-
-    elif main == "exit":
-        out.append("Goodbye.")
-
+    elif main == "matrix": out.extend(egg_matrix())
+    elif main == "linux": out.extend(egg_linux())
+    elif main == "ls": out.extend(egg_ls())
     else:
         out.append(f"Unknown: {main}")
-        out.append("Type 'help' for commands")
-
     return out
+
 
 def cli_boot():
     console.print(Panel(f"{APP_NAME} {APP_VERSION}\nBy {APP_AUTHOR} - {APP_TEAM}", border_style="green"))
@@ -454,64 +415,75 @@ def cli_boot():
     if not threats:
         console.print("[yellow]No local threats. Fetching online...[/yellow]")
         threats = fetch_threats()
-    else:
-        console.print(f"[green]Loaded {len(threats)} threats from DB[/green]")
-        try:
-            threats = fetch_threats()
-        except Exception:
-            pass
     if threats:
         ok, msg = block_domains(threats)
         console.print(f"[green]{msg}[/green]" if ok else f"[red]{msg}[/red]")
     console.print("[green]System ready.[/green]")
-    for line in run_command("help"):
-        console.print(line)
+    show_help()
 
-def cli_main(args):
-    cmd = args[0].lower()
-    if cmd == "start" and len(args) == 1:
-        cli_boot()
-    elif cmd == "gui":
-        if HAS_KIVY:
-            run_gui()
-        else:
-            console.print("[red]Kivy not installed. Run: pip install kivy[/red]")
-    elif cmd == "exit":
-        unblock_all()
-        console.print("[cyan]Goodbye.[/cyan]")
-        sys.exit(0)
-    else:
-        for line in run_command(" ".join(args)):
-            console.print(line)
 
 if HAS_KIVY:
-    BG = get_color_from_hex("#0a0a0a")
-    FG = get_color_from_hex("#00ff00")
-    DG = get_color_from_hex("#008800")
-    Window.clearcolor = BG
+    BG_DARK = get_color_from_hex("#0a0a0a")
+    BG_LIGHT = get_color_from_hex("#f0f0f0")
+    FG_GREEN = get_color_from_hex("#00ff00")
+    DG_GREEN = get_color_from_hex("#008800")
+    Window.clearcolor = BG_DARK
+
+    LANG = {
+        "en": {
+            "welcome": "Welcome to Glitch Sys",
+            "terminal": "Terminal", "settings": "Settings", "about": "About",
+            "team": "Team", "language": "Language", "blocking": "Blocking",
+            "theme": "Theme", "back": "Back", "exit": "Exit", "start": "Start",
+            "stop": "Stop", "scan": "Scan", "status": "Status",
+            "team_text": "Karam Al-Bari\nT STUDIO\n\nAI used for development assistance only.",
+            "about_text": "Glitch Sys 0.1\nVPN + DNS + Blocking\nBy Karam Al-Bari\nT STUDIO 2026"
+        },
+        "ar": {
+            "welcome": "هلا بيك بـ Glitch Sys",
+            "terminal": "التيرمينال", "settings": "الإعدادات", "about": "حول",
+            "team": "الفريق", "language": "اللغة", "blocking": "الحجب",
+            "theme": "الثيم", "back": "رجع", "exit": "طلع", "start": "شغل",
+            "stop": "وقف", "scan": "افحص", "status": "الحالة",
+            "team_text": "كرم الباري\nT STUDIO\n\nتم استخدام الذكاء الاصطناعي للمساعدة فقط.",
+            "about_text": "Glitch Sys 0.1\nVPN + DNS + حجب\nمن كرم الباري\nT STUDIO 2026"
+        }
+    }
+
+    _cfg = load_config()
+    _lang = _cfg.get("lang", "en")
+
+    def t(key):
+        return LANG.get(_lang, LANG["en"]).get(key, key)
 
     class MainScreen(Screen):
         def __init__(self, **kw):
             super().__init__(**kw)
-            layout = BoxLayout(orientation="vertical", padding=20, spacing=10)
-            layout.add_widget(Label(text=f"{APP_NAME} {APP_VERSION}",
-                                    font_size=32, color=FG, markup=False))
-            layout.add_widget(Label(text=f"By {APP_AUTHOR} - {APP_TEAM}",
-                                    font_size=14, color=DG))
+            root = BoxLayout(orientation="vertical", padding=20, spacing=10)
+            root.add_widget(Label(text=f"{APP_NAME} {APP_VERSION}", font_size=32, color=FG_GREEN))
 
-            for name, target in [("Terminal", "terminal"),
-                                 ("Settings", "settings"),
-                                 ("About", "about"),
-                                 ("Exit", "exit")]:
-                btn = Button(text=name, background_color=DG, color=FG,
-                             size_hint_y=None, height=50)
-                if target == "exit":
-                    btn.bind(on_press=self.exit_app)
-                else:
-                    btn.bind(on_press=lambda inst, tgt=target: setattr(self.manager, "current", tgt))
-                layout.add_widget(btn)
-            self.add_widget(layout)
+            grid = GridLayout(cols=2, spacing=10, size_hint_y=None, height=280)
+            buttons = [
+                ("Terminal", self.go_term), ("Settings", self.go_settings),
+                ("Blocking", self.go_block), ("About", self.go_about),
+                ("Start Block", self.do_start), ("Stop Block", self.do_stop),
+                ("Scan", self.go_term), ("Exit", self.exit_app),
+            ]
+            for text, cb in buttons:
+                b = Button(text=text, background_color=DG_GREEN, color=FG_GREEN)
+                b.bind(on_press=cb)
+                grid.add_widget(b)
+            root.add_widget(grid)
+            self.add_widget(root)
 
+        def go_term(self, *a): self.manager.current = "terminal"
+        def go_settings(self, *a): self.manager.current = "settings"
+        def go_block(self, *a): self.manager.current = "blocking"
+        def go_about(self, *a): self.manager.current = "about"
+        def do_start(self, *a):
+            threats = load_threats() or fetch_threats()
+            block_domains(threats)
+        def do_stop(self, *a): unblock_all()
         def exit_app(self, *a):
             unblock_all()
             App.get_running_app().stop()
@@ -519,39 +491,30 @@ if HAS_KIVY:
     class TerminalScreen(Screen):
         def __init__(self, **kw):
             super().__init__(**kw)
-            layout = BoxLayout(orientation="vertical", padding=10, spacing=10)
+            root = BoxLayout(orientation="vertical", padding=10, spacing=10)
 
             top = BoxLayout(size_hint_y=None, height=50)
-            back = Button(text="Back", size_hint_x=0.3, background_color=DG, color=FG)
+            back = Button(text=t("back"), size_hint_x=0.3, background_color=DG_GREEN, color=FG_GREEN)
             back.bind(on_press=lambda *a: setattr(self.manager, "current", "main"))
             top.add_widget(back)
-            top.add_widget(Label(text="Terminal", color=FG))
-            layout.add_widget(top)
+            top.add_widget(Label(text="Terminal", color=FG_GREEN))
+            root.add_widget(top)
 
-            self.output = Label(text="", color=FG, size_hint_y=None, markup=False,
+            self.output = Label(text="", color=FG_GREEN, size_hint_y=None, markup=False,
                                 halign="left", valign="top")
             self.output.bind(texture_size=lambda *a: setattr(self.output, "height", self.output.texture_size[1]))
             self.output.bind(width=lambda *a: setattr(self.output, "text_size", (self.output.width, None)))
             scroll = ScrollView()
             scroll.add_widget(self.output)
-            layout.add_widget(scroll)
+            root.add_widget(scroll)
 
-            self.input = TextInput(multiline=False, background_color=BG,
-                                   foreground_color=FG, cursor_color=FG,
+            self.input = TextInput(multiline=False, background_color=BG_DARK,
+                                   foreground_color=FG_GREEN, cursor_color=FG_GREEN,
                                    hint_text="glitch>", size_hint_y=None, height=50)
             self.input.bind(on_text_validate=self.run_cmd)
-            layout.add_widget(self.input)
-            self.add_widget(layout)
-
-            self.write("Type 'help' for commands")
-            self.write("Try: neofetch, cowsay, matrix, linux")
+            root.add_widget(self.input)
+            self.add_widget(root)
+            self.write("Type 'help'. Try: neofetch, cowsay, matrix, linux")
 
         def write(self, text):
-            self.output.text += f"\n{text}"
-
-        def run_cmd(self, instance):
-            cmd = instance.text.strip()
-            instance.text = ""
-            if not cmd:
-                return
- 
+            
