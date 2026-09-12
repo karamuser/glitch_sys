@@ -30,17 +30,56 @@ jobs:
         run: |
           cd src
           pyinstaller --onefile --name glitch_linux_${{ matrix.arch }} \
-            --exclude-module kivy --exclude-module tkinter \
-            --exclude-module matplotlib --exclude-module numpy \
+            --exclude-module kivy \
+            --exclude-module tkinter \
+            --exclude-module matplotlib \
+            --exclude-module numpy \
             glitch_sys.py
       - uses: actions/upload-artifact@v4
         with:
           name: glitch_linux_${{ matrix.arch }}
           path: src/dist/glitch_linux_${{ matrix.arch }}
 
+  build-linux-gui:
+    name: Linux GUI (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          - arch: x86_64
+            runner: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install system deps
+        run: |
+          sudo apt update
+          sudo apt install -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev \
+            libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev \
+            libavcodec-dev zlib1g-dev
+      - name: Install Python deps
+        run: |
+          pip install --upgrade pip
+          pip install pyinstaller rich kivy
+      - name: Build GUI
+        run: |
+          cd src
+          pyinstaller --onefile --name glitch_linux_${arch}_gui \
+            --collect-all kivy \
+            --collect-all kivy_deps \
+            glitch_sys.py
+        env:
+          arch: ${{ matrix.arch }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: glitch_linux_${{ matrix.arch }}_gui
+          path: src/dist/glitch_linux_${{ matrix.arch }}_gui
+
   release:
     name: Release
-    needs: build-linux-cli
+    needs: [build-linux-cli, build-linux-gui]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     steps:
