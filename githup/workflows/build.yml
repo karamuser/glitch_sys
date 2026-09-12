@@ -48,6 +48,8 @@ jobs:
         include:
           - arch: x86_64
             runner: ubuntu-latest
+          - arch: arm64
+            runner: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -56,9 +58,11 @@ jobs:
       - name: Install system deps
         run: |
           sudo apt update
-          sudo apt install -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev \
-            libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev \
-            libavcodec-dev zlib1g-dev
+          sudo apt install -y \
+            libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev \
+            libsdl2-ttf-dev libportmidi-dev libswscale-dev \
+            libavformat-dev libavcodec-dev zlib1g-dev \
+            libgl1-mesa-dev libgles2-mesa-dev
       - name: Install Python deps
         run: |
           pip install --upgrade pip
@@ -66,12 +70,10 @@ jobs:
       - name: Build GUI
         run: |
           cd src
-          pyinstaller --onefile --name glitch_linux_${arch}_gui \
+          pyinstaller --onefile --name glitch_linux_${{ matrix.arch }}_gui \
             --collect-all kivy \
             --collect-all kivy_deps \
             glitch_sys.py
-        env:
-          arch: ${{ matrix.arch }}
       - uses: actions/upload-artifact@v4
         with:
           name: glitch_linux_${{ matrix.arch }}_gui
