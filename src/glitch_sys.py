@@ -529,4 +529,4 @@ if HAS_KIVY:
             scroll.add_widget(self.output)
             root.add_widget(scroll)
             self.input = TextInput(multiline=False, background_color=BG_DARK,
-                                   foreground_color=FG_GREEN, cursor_color=FG_GR
+                                   foreground_color=FG_GREEN, cursor_color=FG_GR)
