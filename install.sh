@@ -41,10 +41,12 @@ cd "$HOME/glitch_sys/src"
 # pip upgrade removed (Termux restriction)
 pip install rich
 
-# Optional: install kivy for GUI
-read -p "Install GUI (Kivy)? [y/N]: " install_gui
-if [ "$install_gui" = "y" ] || [ "$install_gui" = "Y" ]; then
-    pip install kivy
+# Optional: install kivy for GUI (skip on Termux/Android)
+if [ "$OS" = "Linux" ] && [ ! -d "/data/data/com.termux" ]; then
+    read -p "Install GUI (Kivy)? [y/N]: " install_gui
+    if [ "$install_gui" = "y" ] || [ "$install_gui" = "Y" ]; then
+        pip install kivy
+    fi
 fi
 
 echo ""
