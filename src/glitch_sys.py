@@ -435,6 +435,8 @@ def cli_boot():
     print(f"{APP_NAME} {APP_VERSION}")
     print(f"By {APP_AUTHOR} - {APP_TEAM}")
     print("=" * 50)
+    print("")
+    print("Loading threats...")
     threats = load_threats()
     if not threats:
         print("No local threats. Fetching online...")
@@ -443,39 +445,24 @@ def cli_boot():
         ok, msg = block_domains(threats)
         print(msg)
     print("System ready.")
-    show_help()
+    print("")
+    print("Commands:")
+    print("  glitch start                Start system")
+    print("  glitch open vpn             Show VPN list")
+    print("  glitch open dns             Show DNS list")
+    print("  glitch start vpn <name>     Start a VPN")
+    print("  glitch start dns <name>     Set DNS")
+    print("  glitch rm vpn <name>        Stop a VPN")
+    print("  glitch rm dns               Reset DNS")
+    print("  glitch scan <domain>        Analyze a domain")
+    print("  glitch block                Block threats")
+    print("  glitch unblock              Unblock all")
+    print("  glitch status               System status")
+    print("  glitch update               Update threat DB")
+    print("  glitch gui                  Launch GUI")
+    print("  glitch exit                 Exit")
+    print("")
 
-
-if HAS_KIVY:
-    BG_DARK = get_color_from_hex("#0a0a0a")
-    BG_LIGHT = get_color_from_hex("#f0f0f0")
-    FG_GREEN = get_color_from_hex("#00ff00")
-    DG_GREEN = get_color_from_hex("#008800")
-    Window.clearcolor = BG_DARK
-
-    LANG = {
-        "en": {
-            "welcome": "Welcome to Glitch Sys",
-            "terminal": "Terminal", "settings": "Settings", "about": "About",
-            "team": "Team", "language": "Language", "blocking": "Blocking",
-            "theme": "Theme", "back": "Back", "exit": "Exit", "start": "Start",
-            "stop": "Stop", "scan": "Scan", "status": "Status",
-            "team_text": "Karam Al-Bari\nT STUDIO\n\nAI used for development assistance only.",
-            "about_text": "Glitch Sys 0.3\nVPN + DNS + Blocking\nBy Karam Al-Bari\nT STUDIO 2026"
-        },
-        "ar": {
-            "welcome": "هلا بيك بـ Glitch Sys",
-            "terminal": "التيرمينال", "settings": "الإعدادات", "about": "حول",
-            "team": "الفريق", "language": "اللغة", "blocking": "الحجب",
-            "theme": "الثيم", "back": "رجع", "exit": "طلع", "start": "شغل",
-            "stop": "وقف", "scan": "افحص", "status": "الحالة",
-            "team_text": "كرم الباري\nT STUDIO\n\nتم استخدام الذكاء الاصطناعي للمساعدة فقط.",
-            "about_text": "Glitch Sys 0.3\nVPN + DNS + حجب\nمن كرم الباري\nT STUDIO 2026"
-        }
-    }
-
-    _cfg = load_config()
-    _lang = _cfg.get("lang", "en")
 
     def t(key):
         return LANG.get(_lang, LANG["en"]).get(key, key)
