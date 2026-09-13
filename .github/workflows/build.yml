@@ -15,18 +15,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install deps
-        run: |
-          pip install --upgrade pip
-          pip install pyinstaller rich
-      - name: Build CLI
-        run: |
+      - run: pip install --upgrade pip pyinstaller rich
+      - run: |
           cd src
           pyinstaller --onefile --name glitch_linux_x86_64 \
             --exclude-module kivy \
             --exclude-module tkinter \
-            --exclude-module matplotlib \
-            --exclude-module numpy \
             glitch_sys.py
       - uses: actions/upload-artifact@v4
         with:
@@ -41,24 +35,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install system deps
-        run: |
+      - run: |
           sudo apt update
           sudo apt install -y --no-install-recommends \
             libsdl2-2.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 \
-            libsdl2-ttf-2.0-0 libportmidi0 libswscale-dev \
-            libavformat-dev libavcodec-dev zlib1g-dev \
-            libgl1-mesa-dev libgles2-mesa-dev
-      - name: Install Python deps
-        run: |
-          pip install --upgrade pip
-          pip install pyinstaller rich kivy
-      - name: Build GUI
-        run: |
+            libsdl2-ttf-2.0-0 libportmidi0 libgl1-mesa-dev
+      - run: pip install --upgrade pip pyinstaller rich kivy
+      - run: |
           cd src
           pyinstaller --onefile --name glitch_linux_x86_64_gui \
             --collect-all kivy \
-            --collect-all kivy_deps \
             glitch_sys.py
       - uses: actions/upload-artifact@v4
         with:
