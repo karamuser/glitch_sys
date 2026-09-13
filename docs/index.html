@@ -70,6 +70,20 @@
     margin: 12px 0;
   }
   code { font-family: 'Courier New', monospace; }
+  .btn {
+    display: inline-block;
+    background: #008800;
+    color: #00ff00;
+    padding: 12px 24px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 8px 8px 8px 0;
+    border: 1px solid #00aa00;
+    font-family: 'Courier New', monospace;
+    font-size: 1em;
+  }
+  .btn:hover { background: #00aa00; }
   .note {
     color: #888;
     font-size: 0.9em;
@@ -131,187 +145,77 @@
     <h2 id="t-desc-en">About</h2>
     <h2 id="t-desc-ar" class="hidden">حول التطبيق</h2>
     <p id="p-desc-en">
-      Glitch Sys is a tool that manages VPN, DNS, and blocks malicious domains.
-      It works on GNU/Linux distributions and Android (via Termux).
-      The Linux x86_64 binary supports both CLI and GUI.
-      Other platforms run from source code via Python.
+      Glitch Sys manages VPN, DNS, and blocks malicious domains.
+      Works on GNU/Linux (CLI + GUI) and Android via Termux (CLI).
     </p>
     <p id="p-desc-ar" class="hidden">
-      Glitch Sys أداة تدير VPN و DNS وتحجب المواقع الخبيثة.
-      تعمل على توزيعات GNU/Linux وأندرويد (عبر Termux).
-      نسخة Linux x86_64 تدعم CLI و GUI.
-      باقي الأنظمة تعمل من الكود المصدري عبر Python.
+      Glitch Sys يدير VPN و DNS ويحجب المواقع الخبيثة.
+      يعمل على GNU/Linux (CLI + GUI) وأندرويد عبر Termux (CLI).
     </p>
   </div>
 
   <div class="section">
-    <h2 id="t-avail-en">Available Versions</h2>
-    <h2 id="t-avail-ar" class="hidden">النسخ المتوفرة</h2>
-    <table>
-      <tr>
-        <th id="th-plat-en">Platform</th>
-        <th id="th-plat-ar" class="hidden">النظام</th>
-        <th id="th-type-en">Type</th>
-        <th id="th-type-ar" class="hidden">النوع</th>
-        <th id="th-method-en">Method</th>
-        <th id="th-method-ar" class="hidden">الطريقة</th>
-      </tr>
-      <tr>
-        <td>Linux x86_64</td>
-        <td><span class="badge badge-cli">CLI</span> <span class="badge badge-gui">GUI</span></td>
-        <td id="m1-en">Binary + Source</td>
-        <td id="m1-ar" class="hidden">ثنائي + مصدر</td>
-      </tr>
-      <tr>
-        <td>Linux ARM64</td>
-        <td><span class="badge badge-source">Source</span></td>
-        <td id="m2-en">Python Script</td>
-        <td id="m2-ar" class="hidden">سكربت Python</td>
-      </tr>
-      <tr>
-        <td>Android (Termux)</td>
-        <td><span class="badge badge-source">Source</span></td>
-        <td id="m3-en">Python Script</td>
-        <td id="m3-ar" class="hidden">سكربت Python</td>
-      </tr>
-    </table>
-  </div>
-
-  <div class="section">
-    <h2 id="t-install-en">One-Line Installation</h2>
-    <h2 id="t-install-ar" class="hidden">التثبيت بأمر واحد</h2>
-    <p id="p-install-en">Works on Linux and Termux (Android).</p>
-    <p id="p-install-ar" class="hidden">يعمل على Linux و Termux (أندرويد).</p>
-    <pre><code>curl -sL https://raw.githubusercontent.com/karamuser/glitch_sys/main/install.sh | bash</code></pre>
-    <p class="note" id="n-install-en">The script detects your system and installs everything automatically.</p>
-    <p class="note hidden" id="n-install-ar">السكربت يكتشف نظامك ويثبت كل شي تلقائياً.</p>
+    <h2 id="t-android-en">Android (Termux)</h2>
+    <h2 id="t-android-ar" class="hidden">أندرويد (Termux)</h2>
+    <p id="p-termux-en">Download Termux from GitHub:</p>
+    <p id="p-termux-ar" class="hidden">حمّل Termux من GitHub:</p>
+    <a class="btn" href="https://github.com/termux/termux-app/releases/latest" id="btn-termux-en">Download Termux</a>
+    <a class="btn hidden" href="https://github.com/termux/termux-app/releases/latest" id="btn-termux-ar">تنزيل Termux</a>
+    <p id="p-android-steps-en">Then run in Termux:</p>
+    <p id="p-android-steps-ar" class="hidden">ثم شغّل في Termux:</p>
+    <pre><code>pkg install python git -y
+git clone https://github.com/karamuser/glitch_sys.git
+cd glitch_sys/src
+pip install rich
+python glitch_sys.py help</code></pre>
+    <div class="warning" id="w-android-en">
+      On Android: Blocking and VPN require root. CLI commands work normally.
+    </div>
+    <div class="warning hidden" id="w-android-ar">
+      على أندرويد: الحجب و VPN يحتاجان root. أوامر CLI تعمل عادةً.
+    </div>
   </div>
 
   <div class="section">
     <h2 id="t-linux-en">Linux Installation</h2>
     <h2 id="t-linux-ar" class="hidden">التنزيل على Linux</h2>
 
-    <h3 id="t-linux-x86-cli-en">x86_64 - CLI Version (Binary)</h3>
-    <h3 id="t-linux-x86-cli-ar" class="hidden">x86_64 - نسخة CLI (ثنائية)</h3>
+    <h3 id="t-linux-bin-en">Option 1: Binary (x86_64)</h3>
+    <h3 id="t-linux-bin-ar" class="hidden">الخيار 1: ثنائي (x86_64)</h3>
     <pre><code>wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64
 chmod +x glitch_linux_x86_64
 sudo mv glitch_linux_x86_64 /usr/local/bin/glitch
-sudo glitch start</code></pre>
+glitch help</code></pre>
+    <p class="note" id="n-linux-bin-en">For GUI version: glitch_linux_x86_64_gui</p>
+    <p class="note hidden" id="n-linux-bin-ar">للنسخة الرسومية: glitch_linux_x86_64_gui</p>
 
-    <h3 id="t-linux-x86-gui-en">x86_64 - GUI Version (Binary)</h3>
-    <h3 id="t-linux-x86-gui-ar" class="hidden">x86_64 - نسخة GUI (ثنائية)</h3>
-    <pre><code>wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64_gui
-chmod +x glitch_linux_x86_64_gui
-./glitch_linux_x86_64_gui</code></pre>
-
-    <h3 id="t-linux-arm-en">ARM64 - Source Code (Raspberry Pi, ARM Laptops)</h3>
-    <h3 id="t-linux-arm-ar" class="hidden">ARM64 - الكود المصدري (راسبيري باي، لابتوبات ARM)</h3>
-    <pre><code>curl -sL https://raw.githubusercontent.com/karamuser/glitch_sys/main/install.sh | bash</code></pre>
-    <p class="note" id="n-linux-arm-en">After install: cd ~/glitch_sys/src && python glitch_sys.py start</p>
-    <p class="note hidden" id="n-linux-arm-ar">بعد التثبيت: cd ~/glitch_sys/src && python glitch_sys.py start</p>
-
-    <div class="warning" id="w-linux-en">
-      Requires sudo to modify /etc/hosts. Only run on systems you own.
-    </div>
-    <div class="warning hidden" id="w-linux-ar">
-      يحتاج sudo لتعديل ملف hosts. شغّله فقط على الأجهزة التي تملكها.
-    </div>
+    <h3 id="t-linux-src-en">Option 2: Source Code (Any Distro)</h3>
+    <h3 id="t-linux-src-ar" class="hidden">الخيار 2: الكود المصدري (أي توزيعة)</h3>
+    <pre><code>git clone https://github.com/karamuser/glitch_sys.git
+cd glitch_sys/src
+pip install rich
+python glitch_sys.py help</code></pre>
+    <p class="note" id="n-linux-src-en">For GUI: pip install kivy && python glitch_sys.py gui</p>
+    <p class="note hidden" id="n-linux-src-ar">للواجهة: pip install kivy && python glitch_sys.py gui</p>
   </div>
 
   <div class="section">
-    <h2 id="t-android-en">Android (Termux)</h2>
-    <h2 id="t-android-ar" class="hidden">أندرويد (Termux)</h2>
-
-    <h3 id="t-android-step1-en">Step 1: Install Termux</h3>
-    <h3 id="t-android-step1-ar" class="hidden">الخطوة 1: تثبيت Termux</h3>
-    <p id="p-android-termux-en">Download from GitHub (latest version):</p>
-    <p id="p-android-termux-ar" class="hidden">حمّل من GitHub (أحدث إصدار):</p>
-    <p class="note" id="n-android-termux-en">URL: https://github.com/termux/termux-app/releases/latest</p>
-    <p class="note hidden" id="n-android-termux-ar">الرابط: https://github.com/termux/termux-app/releases/latest</p>
-
-    <h3 id="t-android-step2-en">Step 2: Run Installer</h3>
-    <h3 id="t-android-step2-ar" class="hidden">الخطوة 2: تشغيل المثبت</h3>
-    <pre><code>curl -sL https://raw.githubusercontent.com/karamuser/glitch_sys/main/install.sh | bash</code></pre>
-    <p class="note" id="n-android-run-en">After install: cd ~/glitch_sys/src && python glitch_sys.py start</p>
-    <p class="note hidden" id="n-android-run-ar">بعد التثبيت: cd ~/glitch_sys/src && python glitch_sys.py start</p>
-
-    <div class="warning" id="w-android-en">
-      Android blocks /etc/hosts modification. VPN must be configured via system settings.
-      GUI is not supported on Termux (use CLI).
-    </div>
-    <div class="warning hidden" id="w-android-ar">
-      أندرويد يمنع تعديل hosts. VPN يجب إعداده من إعدادات النظام.
-      الواجهة الرسومية غير مدعومة على Termux (استخدم CLI).
-    </div>
-  </div>
-
-  <div class="section">
-    <h2 id="t-cmd-en">Commands Reference</h2>
-    <h2 id="t-cmd-ar" class="hidden">مرجع الأوامر</h2>
-
-    <h3 id="cmd-basic-en">Basic</h3>
-    <h3 id="cmd-basic-ar" class="hidden">الأوامر الأساسية</h3>
-    <table>
-      <tr><th id="th-cmd-en">Command</th><th id="th-cmd-ar" class="hidden">الأمر</th><th id="th-desc2-en">Description</th><th id="th-desc2-ar" class="hidden">الشرح</th></tr>
-      <tr><td><code>glitch start</code></td><td id="e1-en">Start system and block threats</td><td id="e1-ar" class="hidden">تشغيل النظام وحجب التهديدات</td></tr>
-      <tr><td><code>glitch help</code></td><td id="e2-en">Show all commands</td><td id="e2-ar" class="hidden">عرض كل الأوامر</td></tr>
-      <tr><td><code>glitch status</code></td><td id="e4-en">Show OS, architecture, and threat count</td><td id="e4-ar" class="hidden">عرض النظام والمعمارية وعدد التهديدات</td></tr>
-      <tr><td><code>glitch exit</code></td><td id="e5-en">Unblock all and exit</td><td id="e5-ar" class="hidden">فك الحجب والخروج</td></tr>
-    </table>
-
-    <h3 id="cmd-vpn-en">VPN</h3>
-    <h3 id="cmd-vpn-ar" class="hidden">إدارة VPN</h3>
-    <table>
-      <tr><th id="th-cmd2-en">Command</th><th id="th-cmd2-ar" class="hidden">الأمر</th><th id="th-desc3-en">Description</th><th id="th-desc3-ar" class="hidden">الشرح</th></tr>
-      <tr><td><code>glitch open vpn</code></td><td id="v1-en">Show available VPN list</td><td id="v1-ar" class="hidden">عرض قائمة VPN المتوفرة</td></tr>
-      <tr><td><code>glitch start vpn &lt;name&gt;</code></td><td id="v2-en">Start a specific VPN (e.g. proton)</td><td id="v2-ar" class="hidden">تشغيل VPN محدد (مثل proton)</td></tr>
-      <tr><td><code>glitch start vpn .all</code></td><td id="v3-en">Start all VPNs</td><td id="v3-ar" class="hidden">تشغيل كل الـ VPNs</td></tr>
-      <tr><td><code>glitch rm vpn &lt;name&gt;</code></td><td id="v4-en">Stop a specific VPN</td><td id="v4-ar" class="hidden">إيقاف VPN محدد</td></tr>
-      <tr><td><code>glitch rm vpn .all</code></td><td id="v5-en">Stop all VPNs</td><td id="v5-ar" class="hidden">إيقاف كل الـ VPNs</td></tr>
-    </table>
-
-    <h3 id="cmd-dns-en">DNS</h3>
-    <h3 id="cmd-dns-ar" class="hidden">إدارة DNS</h3>
-    <table>
-      <tr><th id="th-cmd3-en">Command</th><th id="th-cmd3-ar" class="hidden">الأمر</th><th id="th-desc4-en">Description</th><th id="th-desc4-ar" class="hidden">الشرح</th></tr>
-      <tr><td><code>glitch open dns</code></td><td id="d1-en">Show available DNS list</td><td id="d1-ar" class="hidden">عرض قائمة DNS المتوفرة</td></tr>
-      <tr><td><code>glitch start dns &lt;name&gt;</code></td><td id="d2-en">Set a specific DNS</td><td id="d2-ar" class="hidden">تعيين DNS محدد</td></tr>
-      <tr><td><code>glitch start dns .all</code></td><td id="d3-en">Apply all DNS servers</td><td id="d3-ar" class="hidden">تعيين كل سيرفرات DNS</td></tr>
-      <tr><td><code>glitch rm dns</code></td><td id="d4-en">Reset DNS to default</td><td id="d4-ar" class="hidden">إرجاع DNS للافتراضي</td></tr>
-    </table>
-
-    <h3 id="cmd-block-en">Security</h3>
-    <h3 id="cmd-block-ar" class="hidden">الأمان</h3>
-    <table>
-      <tr><th id="th-cmd4-en">Command</th><th id="th-cmd4-ar" class="hidden">الأمر</th><th id="th-desc5-en">Description</th><th id="th-desc5-ar" class="hidden">الشرح</th></tr>
-      <tr><td><code>glitch scan &lt;domain&gt;</code></td><td id="b1-en">Analyze a domain for threats</td><td id="b1-ar" class="hidden">تحليل رابط للتهديدات</td></tr>
-      <tr><td><code>glitch block</code></td><td id="b2-en">Block all threats from database</td><td id="b2-ar" class="hidden">حجب كل التهديدات من القاعدة</td></tr>
-      <tr><td><code>glitch unblock</code></td><td id="b3-en">Remove all blocks</td><td id="b3-ar" class="hidden">فك كل الحجب</td></tr>
-      <tr><td><code>glitch update</code></td><td id="b4-en">Download latest threat database</td><td id="b4-ar" class="hidden">تنزيل أحدث قاعدة تهديدات</td></tr>
-    </table>
-
-    <h3 id="cmd-eggs-en">Hidden (Easter Eggs)</h3>
-    <h3 id="cmd-eggs-ar" class="hidden">مخفية (Easter Eggs)</h3>
-    <table>
-      <tr><th id="th-cmd6-en">Command</th><th id="th-cmd6-ar" class="hidden">الأمر</th><th id="th-desc7-en">Description</th><th id="th-desc7-ar" class="hidden">الشرح</th></tr>
-      <tr><td><code>glitch neofetch</code></td><td id="x1-en">Show system info in ASCII art</td><td id="x1-ar" class="hidden">عرض معلومات النظام برسم ASCII</td></tr>
-      <tr><td><code>glitch cowsay &lt;msg&gt;</code></td><td id="x2-en">A cow says your message</td><td id="x2-ar" class="hidden">بقرة تقول رسالتك</td></tr>
-      <tr><td><code>glitch matrix</code></td><td id="x3-en">Matrix digital rain effect</td><td id="x3-ar" class="hidden">تأثير الماتريكس الرقمي</td></tr>
-      <tr><td><code>glitch linux</code></td><td id="x4-en">Show Linux Tux penguin</td><td id="x4-ar" class="hidden">عرض شعار لينكس (البطريق)</td></tr>
-      <tr><td><code>glitch ls</code></td><td id="x5-en">Fake file listing with hidden folder</td><td id="x5-ar" class="hidden">قائمة ملفات وهمية مع مجلد مخفي</td></tr>
-    </table>
-  </div>
-
-  <div class="section">
-    <h2 id="t-arch-en">Supported Architectures</h2>
-    <h2 id="t-arch-ar" class="hidden">المعماريات المدعومة</h2>
-    <table>
-      <tr><th id="th-arch-en">Architecture</th><th id="th-arch-ar" class="hidden">المعمارية</th><th id="th-status-en">Status</th><th id="th-status-ar" class="hidden">الحالة</th></tr>
-      <tr><td>x86_64</td><td id="st1-en">Binary (CLI + GUI)</td><td id="st1-ar" class="hidden">ثنائي (CLI + GUI)</td></tr>
-      <tr><td>arm64 (aarch64)</td><td id="st2-en">Source code (CLI)</td><td id="st2-ar" class="hidden">كود مصدري (CLI)</td></tr>
-      <tr><td>armv7</td><td id="st3-en">Termux (CLI)</td><td id="st3-ar" class="hidden">Termux (CLI)</td></tr>
-      <tr><td>i686</td><td id="st4-en">Limited</td><td id="st4-ar" class="hidden">محدودة</td></tr>
-    </table>
+    <h2 id="t-cmd-en">Commands</h2>
+    <h2 id="t-cmd-ar" class="hidden">الأوامر</h2>
+    <pre><code>glitch help                Show all commands
+glitch open vpn            Show VPN list
+glitch open dns            Show DNS list
+glitch start vpn <name>    Start a VPN
+glitch start dns <name>    Set DNS
+glitch rm vpn <name>       Stop a VPN
+glitch rm dns              Reset DNS
+glitch scan <domain>       Analyze a domain
+glitch block               Block threats
+glitch unblock             Unblock all
+glitch status              System status
+glitch update              Update threat DB
+glitch gui                 Launch GUI
+glitch exit                Exit</code></pre>
   </div>
 
   <div class="section">
@@ -326,7 +230,6 @@ chmod +x glitch_linux_x86_64_gui
   <footer>
     <p>2026 T STUDIO - All rights reserved</p>
     <p>Made in Iraq</p>
-    <p style="margin-top: 8px;">Built with assistance from <a href="https://chat.deepseek.com" target="_blank">DeepSeek AI</a></p>
   </footer>
 </div>
 
@@ -352,4 +255,4 @@ function setLang(lang) {
 }
 </script>
 </body>
- </html>
+</html>
