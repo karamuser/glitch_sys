@@ -38,7 +38,7 @@ fi
 cd "$HOME/glitch_sys/src"
 
 # Install Python deps
-pip install --upgrade pip
+# pip upgrade removed (Termux restriction)
 pip install rich
 
 # Optional: install kivy for GUI
