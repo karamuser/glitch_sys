@@ -151,7 +151,7 @@ def fetch_threats():
     domains = set()
     for url in sources:
         try:
-            console.print(f"[yellow]Fetching: {url[:60]}...[/yellow]")
+            print(f"Fetching: {url[:60]}...")
             req = urllib.request.Request(url, headers={"User-Agent": "GlitchSys/0.3"})
             with urllib.request.urlopen(req, timeout=25) as r:
                 data = r.read().decode("utf-8", errors="ignore")
@@ -163,11 +163,11 @@ def fetch_threats():
                 if len(p) >= 2:
                     domains.add(p[1])
         except Exception as e:
-            console.print(f"[red]Failed: {e}[/red]")
+            print(f"Failed: {e}")
     domains = sorted(domains)
     with open(DB_FILE, "w", encoding="utf-8") as f:
         json.dump(domains, f)
-    console.print(f"[green]Loaded {len(domains)} threats[/green]")
+    print(f"Loaded {len(domains)} threats")
     return domains
 
 def load_threats():
@@ -278,31 +278,32 @@ def reset_dns():
         return False, str(e)
 
 def show_help():
-    text = f"""
-{APP_NAME} {APP_VERSION} - Commands
-
-glitch start                Start system
-glitch open vpn             Show VPN list
-glitch open dns             Show DNS list
-glitch start vpn <name>     Start a VPN
-glitch start vpn .all       Start all VPNs
-glitch start dns <name>     Set DNS
-glitch start dns .all       Apply all DNS
-glitch rm vpn <name>        Stop a VPN
-glitch rm vpn .all          Stop all VPNs
-glitch rm dns               Reset DNS
-glitch scan <domain>        Analyze a domain
-glitch block                Block threats
-glitch unblock              Unblock all
-glitch status               System status
-glitch update               Update threat DB
-glitch gui                  Launch GUI
-glitch ls commands          Show commands
-glitch exit                 Exit
-
-Hidden: neofetch, cowsay, matrix, linux, ls
-"""
-    console.print(Panel(text, title="Help", border_style="cyan"))
+    print("")
+    print("=" * 50)
+    print(f"{APP_NAME} {APP_VERSION} - Commands")
+    print("=" * 50)
+    print("glitch start                Start system")
+    print("glitch open vpn             Show VPN list")
+    print("glitch open dns             Show DNS list")
+    print("glitch start vpn <name>     Start a VPN")
+    print("glitch start vpn .all       Start all VPNs")
+    print("glitch start dns <name>     Set DNS")
+    print("glitch start dns .all       Apply all DNS")
+    print("glitch rm vpn <name>        Stop a VPN")
+    print("glitch rm vpn .all          Stop all VPNs")
+    print("glitch rm dns               Reset DNS")
+    print("glitch scan <domain>        Analyze a domain")
+    print("glitch block                Block threats")
+    print("glitch unblock              Unblock all")
+    print("glitch status               System status")
+    print("glitch update               Update threat DB")
+    print("glitch gui                  Launch GUI")
+    print("glitch ls commands          Show commands")
+    print("glitch exit                 Exit")
+    print("")
+    print("Hidden: neofetch, cowsay, matrix, linux, ls")
+    print("=" * 50)
+    print("")
 
 def egg_neofetch():
     return [
@@ -429,15 +430,19 @@ def run_command(cmd_str):
 
 
 def cli_boot():
-    console.print(Panel(f"{APP_NAME} {APP_VERSION}\nBy {APP_AUTHOR} - {APP_TEAM}", border_style="green"))
+    print("")
+    print("=" * 50)
+    print(f"{APP_NAME} {APP_VERSION}")
+    print(f"By {APP_AUTHOR} - {APP_TEAM}")
+    print("=" * 50)
     threats = load_threats()
     if not threats:
-        console.print("[yellow]No local threats. Fetching online...[/yellow]")
+        print("No local threats. Fetching online...")
         threats = fetch_threats()
     if threats:
         ok, msg = block_domains(threats)
-        console.print(f"[green]{msg}[/green]" if ok else f"[red]{msg}[/red]")
-    console.print("[green]System ready.[/green]")
+        print(msg)
+    print("System ready.")
     show_help()
 
 
@@ -524,6 +529,4 @@ if HAS_KIVY:
             scroll.add_widget(self.output)
             root.add_widget(scroll)
             self.input = TextInput(multiline=False, background_color=BG_DARK,
-                                   foreground_color=FG_GREEN, cursor_color=FG_GREEN,
-                                   hint_text="glitch>", size_hint_y=None, height=50)
-            self.input.bind(on_text_validate=self.run_cmd)
+                                   foreground_color=FG_GREEN, cursor_color=FG_GR
