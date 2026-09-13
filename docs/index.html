@@ -119,7 +119,7 @@
       <h1>Glitch Sys</h1>
       <p class="subtitle" id="sub-en">VPN | DNS | Protection</p>
       <p class="subtitle hidden" id="sub-ar">VPN | DNS | الحماية</p>
-      <p class="subtitle">Version 0.3</p>
+      <p class="subtitle">Version 0.4</p>
     </div>
     <div class="lang-switch">
       <button id="btn-en" class="active" onclick="setLang('en')">English</button>
@@ -132,13 +132,15 @@
     <h2 id="t-desc-ar" class="hidden">حول التطبيق</h2>
     <p id="p-desc-en">
       Glitch Sys is a tool that manages VPN, DNS, and blocks malicious domains.
-      It works on GNU/Linux distributions (CLI + GUI) and Android (CLI via Termux).
-      Built with Python and designed for privacy and security.
+      It works on GNU/Linux distributions and Android (via Termux).
+      The Linux x86_64 binary supports both CLI and GUI.
+      Other platforms run from source code via Python.
     </p>
     <p id="p-desc-ar" class="hidden">
       Glitch Sys أداة تدير VPN و DNS وتحجب المواقع الخبيثة.
-      تعمل على توزيعات GNU/Linux (CLI + GUI) وأندرويد (CLI عبر Termux).
-      مبنية بلغة Python ومصممة للخصوصية والأمان.
+      تعمل على توزيعات GNU/Linux وأندرويد (عبر Termux).
+      نسخة Linux x86_64 تدعم CLI و GUI.
+      باقي الأنظمة تعمل من الكود المصدري عبر Python.
     </p>
   </div>
 
@@ -151,65 +153,62 @@
         <th id="th-plat-ar" class="hidden">النظام</th>
         <th id="th-type-en">Type</th>
         <th id="th-type-ar" class="hidden">النوع</th>
-        <th id="th-size-en">Size</th>
-        <th id="th-size-ar" class="hidden">الحجم</th>
+        <th id="th-method-en">Method</th>
+        <th id="th-method-ar" class="hidden">الطريقة</th>
       </tr>
       <tr>
         <td>Linux x86_64</td>
-        <td><span class="badge badge-cli">CLI</span></td>
-        <td id="sz1-en">~25 MB</td>
-        <td id="sz1-ar" class="hidden">~25 MB</td>
-      </tr>
-      <tr>
-        <td>Linux x86_64</td>
-        <td><span class="badge badge-gui">GUI</span></td>
-        <td id="sz2-en">~120 MB</td>
-        <td id="sz2-ar" class="hidden">~120 MB</td>
+        <td><span class="badge badge-cli">CLI</span> <span class="badge badge-gui">GUI</span></td>
+        <td id="m1-en">Binary + Source</td>
+        <td id="m1-ar" class="hidden">ثنائي + مصدر</td>
       </tr>
       <tr>
         <td>Linux ARM64</td>
         <td><span class="badge badge-source">Source</span></td>
-        <td id="sz3-en">Python</td>
-        <td id="sz3-ar" class="hidden">Python</td>
+        <td id="m2-en">Python Script</td>
+        <td id="m2-ar" class="hidden">سكربت Python</td>
       </tr>
       <tr>
         <td>Android (Termux)</td>
         <td><span class="badge badge-source">Source</span></td>
-        <td id="sz4-en">Python</td>
-        <td id="sz4-ar" class="hidden">Python</td>
+        <td id="m3-en">Python Script</td>
+        <td id="m3-ar" class="hidden">سكربت Python</td>
       </tr>
     </table>
+  </div>
+
+  <div class="section">
+    <h2 id="t-install-en">One-Line Installation</h2>
+    <h2 id="t-install-ar" class="hidden">التثبيت بأمر واحد</h2>
+    <p id="p-install-en">Works on Linux and Termux (Android).</p>
+    <p id="p-install-ar" class="hidden">يعمل على Linux و Termux (أندرويد).</p>
+    <pre><code>curl -sL https://raw.githubusercontent.com/karamuser/glitch_sys/main/install.sh | bash</code></pre>
+    <p class="note" id="n-install-en">The script detects your system and installs everything automatically.</p>
+    <p class="note hidden" id="n-install-ar">السكربت يكتشف نظامك ويثبت كل شي تلقائياً.</p>
   </div>
 
   <div class="section">
     <h2 id="t-linux-en">Linux Installation</h2>
     <h2 id="t-linux-ar" class="hidden">التنزيل على Linux</h2>
 
-    <h3 id="t-linux-x86-cli-en">x86_64 - CLI Version (Lightweight)</h3>
-    <h3 id="t-linux-x86-cli-ar" class="hidden">x86_64 - نسخة CLI (خفيفة)</h3>
+    <h3 id="t-linux-x86-cli-en">x86_64 - CLI Version (Binary)</h3>
+    <h3 id="t-linux-x86-cli-ar" class="hidden">x86_64 - نسخة CLI (ثنائية)</h3>
     <pre><code>wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64
 chmod +x glitch_linux_x86_64
 sudo mv glitch_linux_x86_64 /usr/local/bin/glitch
 sudo glitch start</code></pre>
-    <p class="note" id="n-linux-x86-cli-en">URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64</p>
-    <p class="note hidden" id="n-linux-x86-cli-ar">الرابط: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64</p>
 
-    <h3 id="t-linux-x86-gui-en">x86_64 - GUI Version (Graphical Interface)</h3>
-    <h3 id="t-linux-x86-gui-ar" class="hidden">x86_64 - نسخة GUI (واجهة رسومية)</h3>
+    <h3 id="t-linux-x86-gui-en">x86_64 - GUI Version (Binary)</h3>
+    <h3 id="t-linux-x86-gui-ar" class="hidden">x86_64 - نسخة GUI (ثنائية)</h3>
     <pre><code>wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64_gui
 chmod +x glitch_linux_x86_64_gui
 ./glitch_linux_x86_64_gui</code></pre>
-    <p class="note" id="n-linux-x86-gui-en">URL: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64_gui</p>
-    <p class="note hidden" id="n-linux-x86-gui-ar">الرابط: https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64_gui</p>
 
     <h3 id="t-linux-arm-en">ARM64 - Source Code (Raspberry Pi, ARM Laptops)</h3>
     <h3 id="t-linux-arm-ar" class="hidden">ARM64 - الكود المصدري (راسبيري باي، لابتوبات ARM)</h3>
-    <pre><code>git clone https://github.com/karamuser/glitch_sys.git
-cd glitch_sys/src
-pip install rich
-python glitch_sys.py start</code></pre>
-    <p class="note" id="n-linux-arm-en">For GUI: pip install kivy && python glitch_sys.py gui</p>
-    <p class="note hidden" id="n-linux-arm-ar">للواجهة: pip install kivy && python glitch_sys.py gui</p>
+    <pre><code>curl -sL https://raw.githubusercontent.com/karamuser/glitch_sys/main/install.sh | bash</code></pre>
+    <p class="note" id="n-linux-arm-en">After install: cd ~/glitch_sys/src && python glitch_sys.py start</p>
+    <p class="note hidden" id="n-linux-arm-ar">بعد التثبيت: cd ~/glitch_sys/src && python glitch_sys.py start</p>
 
     <div class="warning" id="w-linux-en">
       Requires sudo to modify /etc/hosts. Only run on systems you own.
@@ -222,18 +221,20 @@ python glitch_sys.py start</code></pre>
   <div class="section">
     <h2 id="t-android-en">Android (Termux)</h2>
     <h2 id="t-android-ar" class="hidden">أندرويد (Termux)</h2>
-    <p id="p-android-en">Download Termux from F-Droid or GitHub, then run:</p>
-    <p id="p-android-ar" class="hidden">حمّل Termux من F-Droid أو GitHub، ثم شغّل:</p>
-    <pre><code>pkg update && pkg upgrade -y
-pkg install python git -y
-pip install rich
-git clone https://github.com/karamuser/glitch_sys.git
-cd glitch_sys/src
-python glitch_sys.py start</code></pre>
-    <p class="note" id="n-android-en">Termux F-Droid: https://f-droid.org/packages/com.termux/</p>
-    <p class="note hidden" id="n-android-ar">Termux من F-Droid: https://f-droid.org/packages/com.termux/</p>
-    <p class="note" id="n-android-gh-en">Termux Latest: https://github.com/termux/termux-app/releases/latest</p>
-    <p class="note hidden" id="n-android-gh-ar">أحدث Termux: https://github.com/termux/termux-app/releases/latest</p>
+
+    <h3 id="t-android-step1-en">Step 1: Install Termux</h3>
+    <h3 id="t-android-step1-ar" class="hidden">الخطوة 1: تثبيت Termux</h3>
+    <p id="p-android-termux-en">Download from GitHub (latest version):</p>
+    <p id="p-android-termux-ar" class="hidden">حمّل من GitHub (أحدث إصدار):</p>
+    <p class="note" id="n-android-termux-en">URL: https://github.com/termux/termux-app/releases/latest</p>
+    <p class="note hidden" id="n-android-termux-ar">الرابط: https://github.com/termux/termux-app/releases/latest</p>
+
+    <h3 id="t-android-step2-en">Step 2: Run Installer</h3>
+    <h3 id="t-android-step2-ar" class="hidden">الخطوة 2: تشغيل المثبت</h3>
+    <pre><code>curl -sL https://raw.githubusercontent.com/karamuser/glitch_sys/main/install.sh | bash</code></pre>
+    <p class="note" id="n-android-run-en">After install: cd ~/glitch_sys/src && python glitch_sys.py start</p>
+    <p class="note hidden" id="n-android-run-ar">بعد التثبيت: cd ~/glitch_sys/src && python glitch_sys.py start</p>
+
     <div class="warning" id="w-android-en">
       Android blocks /etc/hosts modification. VPN must be configured via system settings.
       GUI is not supported on Termux (use CLI).
@@ -274,7 +275,7 @@ python glitch_sys.py start</code></pre>
     <table>
       <tr><th id="th-cmd3-en">Command</th><th id="th-cmd3-ar" class="hidden">الأمر</th><th id="th-desc4-en">Description</th><th id="th-desc4-ar" class="hidden">الشرح</th></tr>
       <tr><td><code>glitch open dns</code></td><td id="d1-en">Show available DNS list</td><td id="d1-ar" class="hidden">عرض قائمة DNS المتوفرة</td></tr>
-      <tr><td><code>glitch start dns &lt;name&gt;</code></td><td id="d2-en">Set a specific DNS (cloudflare, google, quad9)</td><td id="d2-ar" class="hidden">تعيين DNS محدد (cloudflare, google, quad9)</td></tr>
+      <tr><td><code>glitch start dns &lt;name&gt;</code></td><td id="d2-en">Set a specific DNS</td><td id="d2-ar" class="hidden">تعيين DNS محدد</td></tr>
       <tr><td><code>glitch start dns .all</code></td><td id="d3-en">Apply all DNS servers</td><td id="d3-ar" class="hidden">تعيين كل سيرفرات DNS</td></tr>
       <tr><td><code>glitch rm dns</code></td><td id="d4-en">Reset DNS to default</td><td id="d4-ar" class="hidden">إرجاع DNS للافتراضي</td></tr>
     </table>
@@ -283,7 +284,7 @@ python glitch_sys.py start</code></pre>
     <h3 id="cmd-block-ar" class="hidden">الأمان</h3>
     <table>
       <tr><th id="th-cmd4-en">Command</th><th id="th-cmd4-ar" class="hidden">الأمر</th><th id="th-desc5-en">Description</th><th id="th-desc5-ar" class="hidden">الشرح</th></tr>
-      <tr><td><code>glitch scan &lt;domain&gt;</code></td><td id="b1-en">Analyze a domain for threats (0-100 score)</td><td id="b1-ar" class="hidden">تحليل رابط للتهديدات (درجة 0-100)</td></tr>
+      <tr><td><code>glitch scan &lt;domain&gt;</code></td><td id="b1-en">Analyze a domain for threats</td><td id="b1-ar" class="hidden">تحليل رابط للتهديدات</td></tr>
       <tr><td><code>glitch block</code></td><td id="b2-en">Block all threats from database</td><td id="b2-ar" class="hidden">حجب كل التهديدات من القاعدة</td></tr>
       <tr><td><code>glitch unblock</code></td><td id="b3-en">Remove all blocks</td><td id="b3-ar" class="hidden">فك كل الحجب</td></tr>
       <tr><td><code>glitch update</code></td><td id="b4-en">Download latest threat database</td><td id="b4-ar" class="hidden">تنزيل أحدث قاعدة تهديدات</td></tr>
@@ -307,7 +308,7 @@ python glitch_sys.py start</code></pre>
     <table>
       <tr><th id="th-arch-en">Architecture</th><th id="th-arch-ar" class="hidden">المعمارية</th><th id="th-status-en">Status</th><th id="th-status-ar" class="hidden">الحالة</th></tr>
       <tr><td>x86_64</td><td id="st1-en">Binary (CLI + GUI)</td><td id="st1-ar" class="hidden">ثنائي (CLI + GUI)</td></tr>
-      <tr><td>arm64 (aarch64)</td><td id="st2-en">Source code (CLI + GUI)</td><td id="st2-ar" class="hidden">كود مصدري (CLI + GUI)</td></tr>
+      <tr><td>arm64 (aarch64)</td><td id="st2-en">Source code (CLI)</td><td id="st2-ar" class="hidden">كود مصدري (CLI)</td></tr>
       <tr><td>armv7</td><td id="st3-en">Termux (CLI)</td><td id="st3-ar" class="hidden">Termux (CLI)</td></tr>
       <tr><td>i686</td><td id="st4-en">Limited</td><td id="st4-ar" class="hidden">محدودة</td></tr>
     </table>
