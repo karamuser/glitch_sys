@@ -51,4 +51,4 @@ fi
 
 echo ""
 echo "=== Installation Complete ==="
-echo "Run: cd $HOME/glitch_sys/src && python glitch_sys.py start"
+echo "Run: cd $HOME/glitch_sys/src && python glitch_sys.py help"
