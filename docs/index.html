@@ -99,6 +99,14 @@
     color: #cc8844;
     font-size: 0.9em;
   }
+  .info {
+    background: #0a1a2a;
+    border-left: 3px solid #0088cc;
+    padding: 12px 16px;
+    margin: 16px 0;
+    color: #88ccff;
+    font-size: 0.9em;
+  }
   table { width: 100%; border-collapse: collapse; margin: 12px 0; }
   th, td { padding: 10px; text-align: left; border-bottom: 1px solid #222; }
   th { color: #00ff00; }
@@ -114,6 +122,7 @@
   .badge-cli { background: #1a3a1a; color: #7ee787; border: 1px solid #008800; }
   .badge-gui { background: #1a1a3a; color: #7e9eff; border: 1px solid #0044aa; }
   .badge-source { background: #3a3a1a; color: #ffe77e; border: 1px solid #aa8800; }
+  .badge-new { background: #2a1a3a; color: #cc7eff; border: 1px solid #8800aa; }
   footer {
     text-align: center;
     padding: 24px;
@@ -146,24 +155,38 @@
     <h2 id="t-desc-ar" class="hidden">حول التطبيق</h2>
     <p id="p-desc-en">
       Glitch Sys manages VPN, DNS, and blocks malicious domains.
-      Works on GNU/Linux (CLI + GUI) and Android via Termux (CLI).
+      Works on GNU/Linux and Android via Termux.
+      Linux x86_64 supports CLI + GUI. Other platforms run from source.
     </p>
     <p id="p-desc-ar" class="hidden">
       Glitch Sys يدير VPN و DNS ويحجب المواقع الخبيثة.
-      يعمل على GNU/Linux (CLI + GUI) وأندرويد عبر Termux (CLI).
+      يعمل على GNU/Linux وأندرويد عبر Termux.
+      Linux x86_64 يدعم CLI + GUI. باقي الأنظمة تعمل من الكود المصدري.
     </p>
+  </div>
+
+  <div class="section">
+    <h2 id="t-install-en">One-Line Installation</h2>
+    <h2 id="t-install-ar" class="hidden">التثبيت بأمر واحد</h2>
+    <p id="p-install-en">Works on any Linux distro and Termux:</p>
+    <p id="p-install-ar" class="hidden">يعمل على أي توزيعة لينكس و Termux:</p>
+    <pre><code>curl -sL https://raw.githubusercontent.com/karamuser/glitch_sys/main/install.sh | bash</code></pre>
+    <p class="note" id="n-install-en">Auto-detects system and installs dependencies.</p>
+    <p class="note hidden" id="n-install-ar">يكتشف النظام تلقائياً ويثبت المتطلبات.</p>
   </div>
 
   <div class="section">
     <h2 id="t-android-en">Android (Termux)</h2>
     <h2 id="t-android-ar" class="hidden">أندرويد (Termux)</h2>
-    <p id="p-termux-en">Download Termux from GitHub:</p>
-    <p id="p-termux-ar" class="hidden">حمّل Termux من GitHub:</p>
+    <p id="p-termux-en">Step 1: Download Termux from GitHub:</p>
+    <p id="p-termux-ar" class="hidden">الخطوة 1: حمّل Termux من GitHub:</p>
     <a class="btn" href="https://github.com/termux/termux-app/releases/latest" id="btn-termux-en">Download Termux</a>
     <a class="btn hidden" href="https://github.com/termux/termux-app/releases/latest" id="btn-termux-ar">تنزيل Termux</a>
-    <p id="p-android-steps-en">Then run in Termux:</p>
-    <p id="p-android-steps-ar" class="hidden">ثم شغّل في Termux:</p>
-    <pre><code>pkg install python git -y
+
+    <p id="p-android-step2-en">Step 2: Run in Termux:</p>
+    <p id="p-android-step2-ar" class="hidden">الخطوة 2: شغّل في Termux:</p>
+    <pre><code>pkg update && pkg upgrade -y
+pkg install python git -y
 git clone https://github.com/karamuser/glitch_sys.git
 cd glitch_sys/src
 pip install rich
@@ -180,34 +203,47 @@ python glitch_sys.py help</code></pre>
     <h2 id="t-linux-en">Linux Installation</h2>
     <h2 id="t-linux-ar" class="hidden">التنزيل على Linux</h2>
 
-    <h3 id="t-linux-bin-en">Option 1: Binary (x86_64)</h3>
-    <h3 id="t-linux-bin-ar" class="hidden">الخيار 1: ثنائي (x86_64)</h3>
-    <pre><code>wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64
+    <h3 id="t-linux-bin-en">Option 1: Pre-built Binary (x86_64)</h3>
+    <h3 id="t-linux-bin-ar" class="hidden">الخيار 1: ملف ثنائي جاهز (x86_64)</h3>
+    <p id="p-linux-bin-en">Download the pre-built binary (no Python needed):</p>
+    <p id="p-linux-bin-ar" class="hidden">حمّل الملف الثنائي الجاهز (لا يحتاج Python):</p>
+    <pre><code># CLI version
+wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64
 chmod +x glitch_linux_x86_64
 sudo mv glitch_linux_x86_64 /usr/local/bin/glitch
-glitch help</code></pre>
-    <p class="note" id="n-linux-bin-en">For GUI version: glitch_linux_x86_64_gui</p>
-    <p class="note hidden" id="n-linux-bin-ar">للنسخة الرسومية: glitch_linux_x86_64_gui</p>
+glitch help
 
-    <h3 id="t-linux-src-en">Option 2: Source Code (Any Distro)</h3>
-    <h3 id="t-linux-src-ar" class="hidden">الخيار 2: الكود المصدري (أي توزيعة)</h3>
+# GUI version
+wget https://github.com/karamuser/glitch_sys/releases/latest/download/glitch_linux_x86_64_gui
+chmod +x glitch_linux_x86_64_gui
+./glitch_linux_x86_64_gui</code></pre>
+
+    <h3 id="t-linux-src-en">Option 2: Source Code (Any Distro / ARM)</h3>
+    <h3 id="t-linux-src-ar" class="hidden">الخيار 2: الكود المصدري (أي توزيعة / ARM)</h3>
+    <p id="p-linux-src-en">For ARM64, i686, or any distro:</p>
+    <p id="p-linux-src-ar" class="hidden">لـ ARM64، i686، أو أي توزيعة:</p>
     <pre><code>git clone https://github.com/karamuser/glitch_sys.git
 cd glitch_sys/src
 pip install rich
-python glitch_sys.py help</code></pre>
-    <p class="note" id="n-linux-src-en">For GUI: pip install kivy && python glitch_sys.py gui</p>
-    <p class="note hidden" id="n-linux-src-ar">للواجهة: pip install kivy && python glitch_sys.py gui</p>
+python glitch_sys.py help
+
+# For GUI (x86_64 only):
+pip install kivy
+python glitch_sys.py gui</code></pre>
   </div>
 
   <div class="section">
-    <h2 id="t-cmd-en">Commands</h2>
-    <h2 id="t-cmd-ar" class="hidden">الأوامر</h2>
+    <h2 id="t-cmd-en">All Commands</h2>
+    <h2 id="t-cmd-ar" class="hidden">كل الأوامر</h2>
     <pre><code>glitch help                Show all commands
 glitch open vpn            Show VPN list
 glitch open dns            Show DNS list
 glitch start vpn <name>    Start a VPN
+glitch start vpn .all      Start all VPNs
 glitch start dns <name>    Set DNS
+glitch start dns .all      Apply all DNS
 glitch rm vpn <name>       Stop a VPN
+glitch rm vpn .all         Stop all VPNs
 glitch rm dns              Reset DNS
 glitch scan <domain>       Analyze a domain
 glitch block               Block threats
@@ -215,7 +251,94 @@ glitch unblock             Unblock all
 glitch status              System status
 glitch update              Update threat DB
 glitch gui                 Launch GUI
-glitch exit                Exit</code></pre>
+glitch exit                Exit
+
+Hidden (Easter Eggs):
+glitch neofetch            System info ASCII
+glitch cowsay <msg>        Cow says message
+glitch matrix              Matrix effect
+glitch linux               Tux penguin
+glitch ls                  Fake file list</code></pre>
+  </div>
+
+  <div class="section">
+    <h2 id="t-arch-en">Supported Platforms</h2>
+    <h2 id="t-arch-ar" class="hidden">الأنظمة المدعومة</h2>
+
+    <h3 id="t-arch-hw-en">Architectures</h3>
+    <h3 id="t-arch-hw-ar" class="hidden">المعماريات</h3>
+    <table>
+      <tr><th id="th-arch-en">Arch</th><th id="th-arch-ar" class="hidden">المعمارية</th><th id="th-status-en">Status</th><th id="th-status-ar" class="hidden">الحالة</th></tr>
+      <tr><td>x86_64</td><td id="a1-en">CLI + GUI (Binary)</td><td id="a1-ar" class="hidden">CLI + GUI (ثنائي)</td></tr>
+      <tr><td>arm64 (aarch64)</td><td id="a2-en">CLI (Source)</td><td id="a2-ar" class="hidden">CLI (مصدر)</td></tr>
+      <tr><td>armv7</td><td id="a3-en">CLI (Termux)</td><td id="a3-ar" class="hidden">CLI (Termux)</td></tr>
+      <tr><td>i686</td><td id="a4-en">CLI (Source, limited)</td><td id="a4-ar" class="hidden">CLI (مصدر، محدود)</td></tr>
+    </table>
+
+    <h3 id="t-arch-os-en">Distributions & OS</h3>
+    <h3 id="t-arch-os-ar" class="hidden">التوزيعات وأنظمة التشغيل</h3>
+    <table>
+      <tr><th id="th-os-en">OS / Distro</th><th id="th-os-ar" class="hidden">النظام / التوزيعة</th><th id="th-os-status-en">Status</th><th id="th-os-status-ar" class="hidden">الحالة</th></tr>
+      <tr><td>Linux Mint</td><td id="o1-en">Supported (Binary + Source)</td><td id="o1-ar" class="hidden">مدعوم (ثنائي + مصدر)</td></tr>
+      <tr><td>Ubuntu / Debian</td><td id="o2-en">Supported</td><td id="o2-ar" class="hidden">مدعوم</td></tr>
+      <tr><td>Arch Linux</td><td id="o3-en">Supported</td><td id="o3-ar" class="hidden">مدعوم</td></tr>
+      <tr><td>Fedora</td><td id="o4-en">Supported</td><td id="o4-ar" class="hidden">مدعوم</td></tr>
+      <tr><td>Kali Linux</td><td id="o5-en">Supported</td><td id="o5-ar" class="hidden">مدعوم</td></tr>
+      <tr><td>Android 7.0+ (Termux)</td><td id="o6-en">CLI Supported</td><td id="o6-ar" class="hidden">CLI مدعوم</td></tr>
+      <tr><td>Windows / macOS</td><td id="o7-en">Partial (no VPN/DNS)</td><td id="o7-ar" class="hidden">جزئي (بدون VPN/DNS)</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 id="t-roadmap-en">Roadmap</h2>
+    <h2 id="t-roadmap-ar" class="hidden">خارطة الطريق</h2>
+    <table>
+      <tr>
+        <th id="th-ver-en">Version</th>
+        <th id="th-ver-ar" class="hidden">الإصدار</th>
+        <th id="th-feat-en">Features</th>
+        <th id="th-feat-ar" class="hidden">الميزات</th>
+      </tr>
+      <tr>
+        <td><strong>0.4</strong> <span class="badge badge-new">NOW</span></td>
+        <td id="v04-en">CLI stable, GUI on Linux, install.sh, binary releases</td>
+        <td id="v04-ar" class="hidden">CLI مستقر، GUI على Linux، install.sh، ملفات ثنائية</td>
+      </tr>
+      <tr>
+        <td><strong>1.0</strong></td>
+        <td id="v10-en">Full GUI for all platforms, APK for Android, better threat detection</td>
+        <td id="v10-ar" class="hidden">GUI كامل لكل الأنظمة، APK لأندرويد، كشف تهديدات أفضل</td>
+      </tr>
+      <tr>
+        <td><strong>1.1</strong></td>
+        <td id="v11-en">Plugin system, multi-language UI, cloud sync</td>
+        <td id="v11-ar" class="hidden">نظام إضافات، واجهة متعددة اللغات، مزامنة سحابية</td>
+      </tr>
+      <tr>
+        <td><strong>1.3</strong></td>
+        <td id="v13-en">Community modules, advanced VPN protocols, mobile app</td>
+        <td id="v13-ar" class="hidden">وحدات مجتمعية، بروتوكولات VPN متقدمة، تطبيق جوال</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <h2 id="t-changelog-en">Changelog</h2>
+    <h2 id="t-changelog-ar" class="hidden">سجل التحديثات</h2>
+    <h3 id="t-cl04-en">v0.4 - Current</h3>
+    <h3 id="t-cl04-ar" class="hidden">v0.4 - الحالي</h3>
+    <pre><code>- Added install.sh (auto-detect system)
+- Added binary releases (Linux x86_64)
+- Fixed CLI output on Termux
+- Added ARM64 source install
+- Added roadmap and changelog</code></pre>
+
+    <h3 id="t-cl03-en">v0.3 - Previous</h3>
+    <h3 id="t-cl03-ar" class="hidden">v0.3 - السابق</h3>
+    <pre><code>- Added Kivy GUI
+- Added CLI
+- Added threat scanner
+- Added GitHub Pages site</code></pre>
   </div>
 
   <div class="section">
