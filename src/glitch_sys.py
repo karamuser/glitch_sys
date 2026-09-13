@@ -4,7 +4,7 @@ from pathlib import Path
 from datetime import datetime
 
 APP_NAME = "Glitch Sys"
-APP_VERSION = "0.3"
+APP_VERSION = "0.4"
 APP_AUTHOR = "Karam Al-Bari"
 APP_TEAM = "T STUDIO"
 
@@ -45,23 +45,17 @@ URL_SHORTENERS = ["bit.ly", "tinyurl.com", "goo.gl", "t.co", "ow.ly", "is.gd",
 
 DEFAULT_CONFIG = {"lang": "en", "theme": "dark"}
 
+HAS_RICH = False
+HAS_KIVY = False
+
 try:
     from rich.console import Console
     from rich.table import Table
     from rich.panel import Panel
     console = Console()
+    HAS_RICH = True
 except ImportError:
-    class Console:
-        def print(self, msg=""):
-            print(re.sub(r"\[/?[a-zA-Z0-9 _=#]+\]", "", str(msg)))
-    console = Console()
-    class Table:
-        def __init__(self, title=""): self.rows = []
-        def add_column(self, *a, **k): pass
-        def add_row(self, *a): pass
-    class Panel:
-        def __init__(self, text="", title="", border_style=""): self.text = text
-        def __str__(self): return self.text
+    pass
 
 try:
     from kivy.app import App
@@ -76,7 +70,7 @@ try:
     from kivy.utils import get_color_from_hex
     HAS_KIVY = True
 except ImportError:
-    HAS_KIVY = False
+    pass
 
 
 def load_config():
@@ -152,7 +146,7 @@ def fetch_threats():
     for url in sources:
         try:
             print(f"Fetching: {url[:60]}...")
-            req = urllib.request.Request(url, headers={"User-Agent": "GlitchSys/0.3"})
+            req = urllib.request.Request(url, headers={"User-Agent": "GlitchSys/0.4"})
             with urllib.request.urlopen(req, timeout=25) as r:
                 data = r.read().decode("utf-8", errors="ignore")
             for line in data.split("\n"):
@@ -279,9 +273,9 @@ def reset_dns():
 
 def show_help():
     print("")
-    print("=" * 50)
+    print("=" * 55)
     print(f"{APP_NAME} {APP_VERSION} - Commands")
-    print("=" * 50)
+    print("=" * 55)
     print("glitch start                Start system")
     print("glitch open vpn             Show VPN list")
     print("glitch open dns             Show DNS list")
@@ -302,7 +296,7 @@ def show_help():
     print("glitch exit                 Exit")
     print("")
     print("Hidden: neofetch, cowsay, matrix, linux, ls")
-    print("=" * 50)
+    print("=" * 55)
     print("")
 
 def egg_neofetch():
@@ -431,10 +425,10 @@ def run_command(cmd_str):
 
 def cli_boot():
     print("")
-    print("=" * 50)
+    print("=" * 55)
     print(f"{APP_NAME} {APP_VERSION}")
     print(f"By {APP_AUTHOR} - {APP_TEAM}")
-    print("=" * 50)
+    print("=" * 55)
     print("")
     print("Loading threats...")
     threats = load_threats()
@@ -445,24 +439,39 @@ def cli_boot():
         ok, msg = block_domains(threats)
         print(msg)
     print("System ready.")
-    print("")
-    print("Commands:")
-    print("  glitch start                Start system")
-    print("  glitch open vpn             Show VPN list")
-    print("  glitch open dns             Show DNS list")
-    print("  glitch start vpn <name>     Start a VPN")
-    print("  glitch start dns <name>     Set DNS")
-    print("  glitch rm vpn <name>        Stop a VPN")
-    print("  glitch rm dns               Reset DNS")
-    print("  glitch scan <domain>        Analyze a domain")
-    print("  glitch block                Block threats")
-    print("  glitch unblock              Unblock all")
-    print("  glitch status               System status")
-    print("  glitch update               Update threat DB")
-    print("  glitch gui                  Launch GUI")
-    print("  glitch exit                 Exit")
-    print("")
+    show_help()
 
+
+if HAS_KIVY:
+    BG_DARK = get_color_from_hex("#0a0a0a")
+    BG_LIGHT = get_color_from_hex("#f0f0f0")
+    FG_GREEN = get_color_from_hex("#00ff00")
+    DG_GREEN = get_color_from_hex("#008800")
+    Window.clearcolor = BG_DARK
+
+    LANG = {
+        "en": {
+            "welcome": "Welcome to Glitch Sys",
+            "terminal": "Terminal", "settings": "Settings", "about": "About",
+            "team": "Team", "language": "Language", "blocking": "Blocking",
+            "theme": "Theme", "back": "Back", "exit": "Exit", "start": "Start",
+            "stop": "Stop", "scan": "Scan", "status": "Status",
+            "team_text": "Karam Al-Bari\nT STUDIO\n\nAI used for development assistance only.",
+            "about_text": "Glitch Sys 0.4\nVPN + DNS + Blocking\nBy Karam Al-Bari\nT STUDIO 2026"
+        },
+        "ar": {
+            "welcome": "هلا بيك بـ Glitch Sys",
+            "terminal": "التيرمينال", "settings": "الإعدادات", "about": "حول",
+            "team": "الفريق", "language": "اللغة", "blocking": "الحجب",
+            "theme": "الثيم", "back": "رجع", "exit": "طلع", "start": "شغل",
+            "stop": "وقف", "scan": "افحص", "status": "الحالة",
+            "team_text": "كرم الباري\nT STUDIO\n\nتم استخدام الذكاء الاصطناعي للمساعدة فقط.",
+            "about_text": "Glitch Sys 0.4\nVPN + DNS + حجب\nمن كرم الباري\nT STUDIO 2026"
+        }
+    }
+
+    _cfg = load_config()
+    _lang = _cfg.get("lang", "en")
 
     def t(key):
         return LANG.get(_lang, LANG["en"]).get(key, key)
@@ -516,4 +525,174 @@ def cli_boot():
             scroll.add_widget(self.output)
             root.add_widget(scroll)
             self.input = TextInput(multiline=False, background_color=BG_DARK,
-                                   foreground_color=FG_GREEN, cursor_color=FG_GR)
+                                   foreground_color=FG_GREEN, cursor_color=FG_GREEN,
+                                   hint_text="glitch>", size_hint_y=None, height=50)
+            self.input.bind(on_text_validate=self.run_cmd)
+            root.add_widget(self.input)
+            self.add_widget(root)
+            self.write("Type 'help'. Try: neofetch, cowsay, matrix, linux")
+
+        def write(self, text):
+            self.output.text += f"\n{text}"
+
+        def run_cmd(self, inst):
+            cmd = inst.text.strip()
+            inst.text = ""
+            if not cmd:
+                return
+            self.write(f"glitch> {cmd}")
+            for line in run_command(cmd):
+                self.write(line)
+
+    class SettingsScreen(Screen):
+        def __init__(self, **kw):
+            super().__init__(**kw)
+            root = BoxLayout(orientation="vertical", padding=20, spacing=10)
+            root.add_widget(Label(text=t("settings"), font_size=28, color=FG_GREEN))
+            grid = GridLayout(cols=2, spacing=10, size_hint_y=None, height=160)
+            for name, cb in [(t("team"), self.go_team), (t("language"), self.go_lang),
+                             (t("blocking"), self.go_block), (t("theme"), self.toggle_theme)]:
+                b = Button(text=name, background_color=DG_GREEN, color=FG_GREEN)
+                b.bind(on_press=cb)
+                grid.add_widget(b)
+            root.add_widget(grid)
+            back = Button(text=t("back"), background_color=DG_GREEN, color=FG_GREEN,
+                          size_hint_y=None, height=50)
+            back.bind(on_press=lambda *a: setattr(self.manager, "current", "main"))
+            root.add_widget(back)
+            self.add_widget(root)
+
+        def go_team(self, *a): self.manager.current = "team"
+        def go_lang(self, *a): self.manager.current = "language"
+        def go_block(self, *a): self.manager.current = "blocking"
+        def toggle_theme(self, *a):
+            global _cfg
+            _cfg["theme"] = "light" if _cfg.get("theme", "dark") == "dark" else "dark"
+            save_config(_cfg)
+            Window.clearcolor = BG_LIGHT if _cfg["theme"] == "light" else BG_DARK
+
+    class TeamScreen(Screen):
+        def __init__(self, **kw):
+            super().__init__(**kw)
+            root = BoxLayout(orientation="vertical", padding=20, spacing=10)
+            root.add_widget(Label(text=t("team"), font_size=28, color=FG_GREEN))
+            root.add_widget(Label(text=t("team_text"), color=FG_GREEN, halign="center"))
+            back = Button(text=t("back"), background_color=DG_GREEN, color=FG_GREEN,
+                          size_hint_y=None, height=50)
+            back.bind(on_press=lambda *a: setattr(self.manager, "current", "settings"))
+            root.add_widget(back)
+            self.add_widget(root)
+
+    class LanguageScreen(Screen):
+        def __init__(self, **kw):
+            super().__init__(**kw)
+            root = BoxLayout(orientation="vertical", padding=20, spacing=10)
+            root.add_widget(Label(text=t("language"), font_size=28, color=FG_GREEN))
+            for code, name in [("en", "English"), ("ar", "العربية")]:
+                b = Button(text=name, background_color=DG_GREEN, color=FG_GREEN,
+                           size_hint_y=None, height=50)
+                b.bind(on_press=lambda inst, c=code: self.set_lang(c))
+                root.add_widget(b)
+            back = Button(text=t("back"), background_color=DG_GREEN, color=FG_GREEN,
+                          size_hint_y=None, height=50)
+            back.bind(on_press=lambda *a: setattr(self.manager, "current", "settings"))
+            root.add_widget(back)
+            self.add_widget(root)
+
+        def set_lang(self, code):
+            global _lang, _cfg
+            _lang = code
+            _cfg["lang"] = code
+            save_config(_cfg)
+            App.get_running_app().rebuild()
+
+    class BlockingScreen(Screen):
+        def __init__(self, **kw):
+            super().__init__(**kw)
+            root = BoxLayout(orientation="vertical", padding=20, spacing=10)
+            root.add_widget(Label(text=t("blocking"), font_size=28, color=FG_GREEN))
+            root.add_widget(Label(text=f"Threats in DB: {len(load_threats())}", color=FG_GREEN))
+            for name, cb in [("Update DB", self.do_update),
+                             ("Block All", self.do_block),
+                             ("Unblock All", self.do_unblock)]:
+                b = Button(text=name, background_color=DG_GREEN, color=FG_GREEN,
+                           size_hint_y=None, height=50)
+                b.bind(on_press=cb)
+                root.add_widget(b)
+            back = Button(text=t("back"), background_color=DG_GREEN, color=FG_GREEN,
+                          size_hint_y=None, height=50)
+            back.bind(on_press=lambda *a: setattr(self.manager, "current", "settings"))
+            root.add_widget(back)
+            self.add_widget(root)
+
+        def do_update(self, *a): fetch_threats()
+        def do_block(self, *a):
+            threats = load_threats()
+            if threats:
+                block_domains(threats)
+        def do_unblock(self, *a): unblock_all()
+
+    class AboutScreen(Screen):
+        def __init__(self, **kw):
+            super().__init__(**kw)
+            root = BoxLayout(orientation="vertical", padding=20, spacing=10)
+            root.add_widget(Label(text=t("about"), font_size=28, color=FG_GREEN))
+            root.add_widget(Label(text=t("about_text"), color=FG_GREEN, halign="center"))
+            back = Button(text=t("back"), background_color=DG_GREEN, color=FG_GREEN,
+                          size_hint_y=None, height=50)
+            back.bind(on_press=lambda *a: setattr(self.manager, "current", "main"))
+            root.add_widget(back)
+            self.add_widget(root)
+
+    class GlitchGUI(App):
+        def build(self):
+            self.sm = ScreenManager()
+            self._add_all()
+            return self.sm
+
+        def _add_all(self):
+            for cls, name in [(MainScreen, "main"), (TerminalScreen, "terminal"),
+                              (SettingsScreen, "settings"), (TeamScreen, "team"),
+                              (LanguageScreen, "language"), (BlockingScreen, "blocking"),
+                              (AboutScreen, "about")]:
+                self.sm.add_widget(cls(name=name))
+
+        def rebuild(self):
+            self.sm.clear_widgets()
+            self._add_all()
+            self.sm.current = "main"
+
+    def run_gui():
+        GlitchGUI().run()
+else:
+    def run_gui():
+        print("Kivy not installed. Run: pip install kivy")
+
+
+def main():
+    if len(sys.argv) < 2:
+        if HAS_KIVY:
+            run_gui()
+        else:
+            cli_boot()
+        return
+
+    cmd = sys.argv[1].lower()
+
+    if cmd == "gui":
+        run_gui()
+    elif cmd == "start" and len(sys.argv) == 2:
+        cli_boot()
+    elif cmd == "exit":
+        unblock_all()
+        print("Goodbye.")
+        sys.exit(0)
+    elif cmd in ("help", "--help", "-h"):
+        show_help()
+    else:
+        for line in run_command(" ".join(sys.argv[1:])):
+            print(line)
+
+
+if __name__ == "__main__":
+    main()
