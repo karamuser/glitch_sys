@@ -526,4 +526,4 @@ if HAS_KIVY:
             self.input = TextInput(multiline=False, background_color=BG_DARK,
                                    foreground_color=FG_GREEN, cursor_color=FG_GREEN,
                                    hint_text="glitch>", size_hint_y=None, height=50)
-            self.input.bind(on_text_valid
+            self.input.bind(on_text_valid)
